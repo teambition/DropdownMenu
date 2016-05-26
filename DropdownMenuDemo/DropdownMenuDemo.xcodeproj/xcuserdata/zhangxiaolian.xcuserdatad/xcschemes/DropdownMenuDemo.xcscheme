@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ACE6DB6B1CF74183005C6667"
-               BuildableName = "DropdownMenu.framework"
-               BlueprintName = "DropdownMenu"
-               ReferencedContainer = "container:DropdownMenu.xcodeproj">
+               BlueprintIdentifier = "ACE6DB8E1CF741F6005C6667"
+               BuildableName = "DropdownMenuDemo.app"
+               BlueprintName = "DropdownMenuDemo"
+               ReferencedContainer = "container:DropdownMenuDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,20 +32,30 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ACE6DB751CF74183005C6667"
-               BuildableName = "DropdownMenuTests.xctest"
-               BlueprintName = "DropdownMenuTests"
-               ReferencedContainer = "container:DropdownMenu.xcodeproj">
+               BlueprintIdentifier = "ACE6DBA21CF741F6005C6667"
+               BuildableName = "DropdownMenuDemoTests.xctest"
+               BlueprintName = "DropdownMenuDemoTests"
+               ReferencedContainer = "container:DropdownMenuDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ACE6DBAD1CF741F6005C6667"
+               BuildableName = "DropdownMenuDemoUITests.xctest"
+               BlueprintName = "DropdownMenuDemoUITests"
+               ReferencedContainer = "container:DropdownMenuDemo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ACE6DB6B1CF74183005C6667"
-            BuildableName = "DropdownMenu.framework"
-            BlueprintName = "DropdownMenu"
-            ReferencedContainer = "container:DropdownMenu.xcodeproj">
+            BlueprintIdentifier = "ACE6DB8E1CF741F6005C6667"
+            BuildableName = "DropdownMenuDemo.app"
+            BlueprintName = "DropdownMenuDemo"
+            ReferencedContainer = "container:DropdownMenuDemo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -61,15 +71,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ACE6DB6B1CF74183005C6667"
-            BuildableName = "DropdownMenu.framework"
-            BlueprintName = "DropdownMenu"
-            ReferencedContainer = "container:DropdownMenu.xcodeproj">
+            BlueprintIdentifier = "ACE6DB8E1CF741F6005C6667"
+            BuildableName = "DropdownMenuDemo.app"
+            BlueprintName = "DropdownMenuDemo"
+            ReferencedContainer = "container:DropdownMenuDemo.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -79,15 +90,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ACE6DB6B1CF74183005C6667"
-            BuildableName = "DropdownMenu.framework"
-            BlueprintName = "DropdownMenu"
-            ReferencedContainer = "container:DropdownMenu.xcodeproj">
+            BlueprintIdentifier = "ACE6DB8E1CF741F6005C6667"
+            BuildableName = "DropdownMenuDemo.app"
+            BlueprintName = "DropdownMenuDemo"
+            ReferencedContainer = "container:DropdownMenuDemo.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

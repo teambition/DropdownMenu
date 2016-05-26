@@ -10,6 +10,7 @@
 		ACE6DB701CF74183005C6667 /* DropdownMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = ACE6DB6F1CF74183005C6667 /* DropdownMenu.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ACE6DB771CF74183005C6667 /* DropdownMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACE6DB6C1CF74183005C6667 /* DropdownMenu.framework */; };
 		ACE6DB7C1CF74183005C6667 /* DropdownMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE6DB7B1CF74183005C6667 /* DropdownMenuTests.swift */; };
+		ACE6DBC11CF74256005C6667 /* DropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE6DBC01CF74256005C6667 /* DropdownMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		ACE6DB761CF74183005C6667 /* DropdownMenuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropdownMenuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE6DB7B1CF74183005C6667 /* DropdownMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenuTests.swift; sourceTree = "<group>"; };
 		ACE6DB7D1CF74183005C6667 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ACE6DBC01CF74256005C6667 /* DropdownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropdownMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				ACE6DB6F1CF74183005C6667 /* DropdownMenu.h */,
+				ACE6DBC01CF74256005C6667 /* DropdownMenu.swift */,
 				ACE6DB711CF74183005C6667 /* Info.plist */,
 			);
 			path = DropdownMenu;
@@ -194,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACE6DBC11CF74256005C6667 /* DropdownMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +314,7 @@
 		ACE6DB811CF74183005C6667 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -320,12 +325,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		ACE6DB821CF74183005C6667 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -378,6 +385,7 @@
 				ACE6DB821CF74183005C6667 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ACE6DB831CF74183005C6667 /* Build configuration list for PBXNativeTarget "DropdownMenuTests" */ = {
 			isa = XCConfigurationList;
@@ -386,6 +394,7 @@
 				ACE6DB851CF74183005C6667 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
