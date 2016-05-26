@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DropdownMenu/DropdownMenu.swift"
+            timestampString = "485973902.852587"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "hideMenu()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DropdownMenu.DropdownMenu.hideMenu () -&gt; ()"
+                  moduleName = "DropdownMenu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropdownMenu.swift"
+                  timestampString = "485970445.286638"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "15">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DropdownMenu.DropdownMenu.(hideMenu () -&gt; ()).(closure #1)"
+                  moduleName = "DropdownMenu"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropdownMenu.swift"
+                  timestampString = "485970445.286772"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "118"
+                  endingLineNumber = "118"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

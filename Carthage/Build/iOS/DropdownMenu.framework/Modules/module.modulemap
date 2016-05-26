@@ -1,0 +1,10 @@
+framework module DropdownMenu {
+  umbrella header "DropdownMenu.h"
+
+  export *
+  module * { export * }
+}
+
+module DropdownMenu.Swift {
+    header "DropdownMenu-Swift.h"
+}

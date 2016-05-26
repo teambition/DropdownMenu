@@ -16,8 +16,10 @@ public class DropdownMenu: UIView {
     private weak var navigationController: UINavigationController!
     var images: [UIImage] = []
     var items: [String] = []
+    public var selectedRow: Int
 
     var tableView: UITableView!
+    var barCoverView: UIView!
     public weak var delegate: DropdownMenuDelegate?
     var isShow = false
 
@@ -31,7 +33,6 @@ public class DropdownMenu: UIView {
     public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
 
     public var checkmarkTintColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-    public var selectedRow: Int = 0
     public var displaySelected: Bool = true
 
 
@@ -39,10 +40,11 @@ public class DropdownMenu: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public init(navigationController: UINavigationController, images: [UIImage] = [], items: [String]) {
+    public init(navigationController: UINavigationController, images: [UIImage] = [], items: [String], selectedRow: Int = 0) {
         self.navigationController = navigationController
         self.images = images
         self.items = items
+        self.selectedRow = selectedRow
 
         let navigationBarFrame: CGRect = navigationController.navigationBar.frame
         let menuFrame: CGRect = CGRect(x: 0, y: (navigationBarFrame.height + navigationBarFrame.origin.y), width: navigationBarFrame.width, height: navigationController.view.frame.height - navigationBarFrame.height - navigationBarFrame.origin.y)
@@ -51,6 +53,20 @@ public class DropdownMenu: UIView {
         clipsToBounds = true
         setupGestureView()
         setupTableView()
+    }
+
+    private func setupNavigationBarCoverView() {
+        barCoverView = UIView()
+        barCoverView.backgroundColor = UIColor.clearColor()
+        navigationController.view.addSubview(barCoverView)
+        barCoverView.translatesAutoresizingMaskIntoConstraints = false
+
+        let navigationBar = navigationController.navigationBar
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Top, relatedBy: .Equal, toItem: navigationBar, attribute: .Top, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Bottom, relatedBy: .Equal, toItem: navigationBar, attribute: .Bottom, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Left, relatedBy: .Equal, toItem: navigationBar, attribute: .Left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Right, relatedBy: .Equal, toItem: navigationBar, attribute: .Right, multiplier: 1.0, constant: 0)])
+        barCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
 
     private func setupGestureView() {
@@ -93,6 +109,8 @@ public class DropdownMenu: UIView {
         }
 
         isShow = true
+        tableView.reloadData()
+        setupNavigationBarCoverView()
         navigationController.view.insertSubview(self, belowSubview: navigationController.navigationBar)
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: navigationController.navigationBar, attribute: .Bottom, multiplier: 1.0, constant: 0)])
@@ -113,6 +131,7 @@ public class DropdownMenu: UIView {
             self.backgroundColor = self.backgroudBeginColor
             self.tableView.frame.origin.y = -self.tableViewHeight
         }) { (finished) in
+            self.barCoverView.removeFromSuperview()
             self.removeFromSuperview()
             self.isShow = false
         }
