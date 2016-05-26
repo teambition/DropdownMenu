@@ -14,24 +14,22 @@ public protocol DropdownMenuDelegate: NSObjectProtocol {
 
 public class DropdownMenu: UIView {
     private weak var navigationController: UINavigationController!
-    var images: [UIImage] = []
-    var items: [String] = []
-    public var selectedRow: Int
+    private var images: [UIImage] = []
+    private var items: [String] = []
+    private var selectedRow: Int
 
-    var tableView: UITableView!
-    var barCoverView: UIView!
+    private var tableView: UITableView!
+    private var barCoverView: UIView!
+    private var isShow = false
+
     public weak var delegate: DropdownMenuDelegate?
-    var isShow = false
-
-
     public var animateDuration: NSTimeInterval = 0.25
-    public var backgroudBeginColor: UIColor = UIColor.blackColor().colorWithAlphaComponent(0.0)
-    public var backgroudEndColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
+    public var backgroudBeginColor: UIColor = UIColor.whiteColor()
+    public var backgroudEndColor = UIColor(white: 0.6, alpha: 1.0)
     public var rowHeight: CGFloat = 50
     public var tableViewHeight: CGFloat = 0
     public var defaultBottonMargin: CGFloat = 150
     public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
-
     public var checkmarkTintColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     public var displaySelected: Bool = true
 
@@ -109,7 +107,6 @@ public class DropdownMenu: UIView {
         }
 
         isShow = true
-        tableView.reloadData()
         setupNavigationBarCoverView()
         navigationController.view.insertSubview(self, belowSubview: navigationController.navigationBar)
         translatesAutoresizingMaskIntoConstraints = false
