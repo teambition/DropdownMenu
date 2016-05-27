@@ -10,9 +10,8 @@ import UIKit
 import DropdownMenu
 
 class ViewController: UIViewController {
-    let images: [UIImage] = [UIImage(named: "file")!, UIImage(named: "post")!]
-    let items: [String] = ["File", "Post"]
     var selectedRow: Int = 0
+    var items: [DropdownItem]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +23,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func showMenu(sender: UIBarButtonItem) {
-        let menuView = DropdownMenu(navigationController: navigationController!, images: images, items: items, selectedRow: selectedRow)
+        let images: [UIImage] = [UIImage(named: "file")!, UIImage(named: "post")!]
+        let titles: [String] = ["File", "Post"]
+        let item1 = DropdownItem(image: images[0], title: titles[0])
+        let item2 = DropdownItem(image: images[1], title: titles[1], style: .Hightlight)
+        items = [item1, item2]
+        let menuView = DropdownMenu(navigationController: navigationController!, items: items, selectedRow: selectedRow)
         menuView.delegate = self
         menuView.showMenu()
     }
@@ -33,13 +37,13 @@ class ViewController: UIViewController {
 
 extension ViewController: DropdownMenuDelegate {
     func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("DropdownMenu didselect \(indexPath.row) text:\(items[indexPath.row])")
+        print("DropdownMenu didselect \(indexPath.row) text:\(items[indexPath.row].title)")
         self.selectedRow = indexPath.row
 
-        let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row])", preferredStyle: .Alert)
+        let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row].title)", preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
         alertConroller.addAction(okAction)
-        presentViewController(alertConroller, animated: true) { 
+        presentViewController(alertConroller, animated: true) {
             print("Display success")
         }
     }

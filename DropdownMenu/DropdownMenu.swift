@@ -14,8 +14,7 @@ public protocol DropdownMenuDelegate: NSObjectProtocol {
 
 public class DropdownMenu: UIView {
     private weak var navigationController: UINavigationController!
-    private var images: [UIImage] = []
-    private var items: [String] = []
+    private var items: [DropdownItem] = []
     private var selectedRow: Int
 
     private var tableView: UITableView!
@@ -30,6 +29,7 @@ public class DropdownMenu: UIView {
     public var tableViewHeight: CGFloat = 0
     public var defaultBottonMargin: CGFloat = 150
     public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
+    public var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     public var checkmarkTintColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     public var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
@@ -40,9 +40,8 @@ public class DropdownMenu: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public init(navigationController: UINavigationController, images: [UIImage] = [], items: [String], selectedRow: Int = 0) {
+    public init(navigationController: UINavigationController, items: [DropdownItem], selectedRow: Int = 0) {
         self.navigationController = navigationController
-        self.images = images
         self.items = items
         self.selectedRow = selectedRow
 
@@ -148,18 +147,31 @@ extension DropdownMenu: UITableViewDataSource {
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let item = items[indexPath.row]
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "dropdownMenuCell")
-        if images.count > 0 {
-            cell.imageView?.image = images[indexPath.row]
+
+        switch item.style {
+        case .Default:
+            cell.textLabel?.textColor = textColor
+            if let image = item.image {
+                cell.imageView?.image = image
+            }
+        case .Hightlight:
+            cell.textLabel?.textColor = highlightColor
+            if let image = item.image {
+                let highlightImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                cell.imageView?.image = highlightImage
+                cell.imageView?.tintColor = highlightColor
+            }
         }
-        cell.textLabel?.text = items[indexPath.row]
-        cell.textLabel?.textColor = textColor
-        cell.tintColor = checkmarkTintColor
+
+        cell.textLabel?.text = item.title
         if displaySelected && indexPath.row == selectedRow {
             cell.accessoryType = .Checkmark
         } else {
             cell.accessoryType = .None
         }
+        cell.tintColor = checkmarkTintColor
         return cell
     }
 }
