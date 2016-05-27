@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropdownMenuDemo/DropdownMenuDemo/ViewController.swift"
-            timestampString = "486032758.934225"
+            timestampString = "486041301.358783"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "dropdownMenu(_:didSelectRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>

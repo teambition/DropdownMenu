@@ -8,16 +8,16 @@
 
 import UIKit
 
-public protocol DropdownMenuDelegate: NSObjectProtocol {
-    func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath)
+@objc public protocol DropdownMenuDelegate: NSObjectProtocol {
+    optional func dropdownMenu(dropdownMenu: DropdownMenu, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    optional func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath)
 }
 
 public class DropdownMenu: UIView {
     private weak var navigationController: UINavigationController!
     private var items: [DropdownItem] = []
     private var selectedRow: Int
-
-    private var tableView: UITableView!
+    public var tableView: UITableView!
     private var barCoverView: UIView!
     private var isShow = false
 
@@ -30,7 +30,6 @@ public class DropdownMenu: UIView {
     public var defaultBottonMargin: CGFloat = 150
     public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     public var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-    public var checkmarkTintColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     public var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
     public var displaySelected: Bool = true
@@ -147,6 +146,9 @@ extension DropdownMenu: UITableViewDataSource {
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let customCell = delegate?.dropdownMenu?(self, cellForRowAtIndexPath: indexPath) {
+            return customCell
+        }
         let item = items[indexPath.row]
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "dropdownMenuCell")
 
@@ -156,7 +158,7 @@ extension DropdownMenu: UITableViewDataSource {
             if let image = item.image {
                 cell.imageView?.image = image
             }
-        case .Hightlight:
+        case .Highlight:
             cell.textLabel?.textColor = highlightColor
             if let image = item.image {
                 let highlightImage = image.imageWithRenderingMode(.AlwaysTemplate)
@@ -166,12 +168,17 @@ extension DropdownMenu: UITableViewDataSource {
         }
 
         cell.textLabel?.text = item.title
+        cell.tintColor = highlightColor
         if displaySelected && indexPath.row == selectedRow {
             cell.accessoryType = .Checkmark
         } else {
             cell.accessoryType = .None
         }
-        cell.tintColor = checkmarkTintColor
+
+        if let accesoryImage = item.accessoryImage {
+            cell.accessoryView = UIImageView(image: accesoryImage)
+        }
+
         return cell
     }
 }
@@ -187,14 +194,17 @@ extension DropdownMenu: UITableViewDelegate {
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if displaySelected {
-            let previousSelectedcell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-            previousSelectedcell?.accessoryType = .None
-            selectedRow = indexPath.row
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            cell?.accessoryType = .Checkmark
+            let item = items[indexPath.row]
+            if item.accessoryImage  == nil {
+                let previousSelectedcell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
+                previousSelectedcell?.accessoryType = .None
+                selectedRow = indexPath.row
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                cell?.accessoryType = .Checkmark
+            }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         hideMenu()
-        delegate?.dropdownMenu(self, didSelectRowAtIndexPath: indexPath)
+        delegate?.dropdownMenu?(self, didSelectRowAtIndexPath: indexPath)
     }
 }

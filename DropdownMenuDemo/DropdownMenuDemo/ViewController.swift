@@ -23,22 +23,24 @@ class ViewController: UIViewController {
     }
 
     @IBAction func showMenu(sender: UIBarButtonItem) {
-        let images: [UIImage] = [UIImage(named: "file")!, UIImage(named: "post")!]
-        let titles: [String] = ["File", "Post"]
-        let item1 = DropdownItem(image: images[0], title: titles[0])
-        let item2 = DropdownItem(image: images[1], title: titles[1], style: .Hightlight)
-        items = [item1, item2]
+        let item1 = DropdownItem(title: "NO Image")
+        let item2 = DropdownItem(image: UIImage(named: "file")!, title: "File")
+        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .Highlight)
+        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .Highlight, accessoryImage: UIImage(named: "accessory")!)
+
+        items = [item1, item2, item3, item4]
         let menuView = DropdownMenu(navigationController: navigationController!, items: items, selectedRow: selectedRow)
         menuView.delegate = self
         menuView.showMenu()
     }
-
 }
 
 extension ViewController: DropdownMenuDelegate {
     func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("DropdownMenu didselect \(indexPath.row) text:\(items[indexPath.row].title)")
-        self.selectedRow = indexPath.row
+        if indexPath.row != items.count - 1 {
+            self.selectedRow = indexPath.row
+        }
 
         let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row].title)", preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
