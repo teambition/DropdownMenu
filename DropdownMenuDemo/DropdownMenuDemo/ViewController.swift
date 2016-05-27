@@ -39,6 +39,8 @@ extension ViewController: DropdownMenuDelegate {
         let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row])", preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
         alertConroller.addAction(okAction)
-        presentViewController(alertConroller, animated: true, completion: nil)
+        presentViewController(alertConroller, animated: true) { 
+            print("Display success")
+        }
     }
 }

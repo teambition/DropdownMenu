@@ -24,8 +24,8 @@ public class DropdownMenu: UIView {
 
     public weak var delegate: DropdownMenuDelegate?
     public var animateDuration: NSTimeInterval = 0.25
-    public var backgroudBeginColor: UIColor = UIColor.whiteColor()
-    public var backgroudEndColor = UIColor(white: 0.6, alpha: 1.0)
+    public var backgroudBeginColor: UIColor = UIColor.blackColor().colorWithAlphaComponent(0)
+    public var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
     public var rowHeight: CGFloat = 50
     public var tableViewHeight: CGFloat = 0
     public var defaultBottonMargin: CGFloat = 150
