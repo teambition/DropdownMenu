@@ -31,6 +31,8 @@ public class DropdownMenu: UIView {
     public var defaultBottonMargin: CGFloat = 150
     public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     public var checkmarkTintColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+    public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
+    public var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
     public var displaySelected: Bool = true
 
 
@@ -89,7 +91,8 @@ public class DropdownMenu: UIView {
         }
 
         tableView = UITableView(frame: CGRect.zero, style: .Grouped)
-        tableView.separatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
+        tableView.separatorColor = tableViewSeperatorColor
+        tableView.backgroundColor = tableViewBackgroundColor
         tableView?.delegate = self
         tableView?.dataSource = self
         addSubview(tableView)
@@ -178,9 +181,8 @@ extension DropdownMenu: UITableViewDelegate {
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.accessoryType = .Checkmark
         }
-
-        delegate?.dropdownMenu(self, didSelectRowAtIndexPath: indexPath)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         hideMenu()
+        delegate?.dropdownMenu(self, didSelectRowAtIndexPath: indexPath)
     }
 }
