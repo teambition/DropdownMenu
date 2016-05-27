@@ -35,5 +35,10 @@ extension ViewController: DropdownMenuDelegate {
     func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("DropdownMenu didselect \(indexPath.row) text:\(items[indexPath.row])")
         self.selectedRow = indexPath.row
+
+        let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row])", preferredStyle: .Alert)
+        let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+        alertConroller.addAction(okAction)
+        presentViewController(alertConroller, animated: true, completion: nil)
     }
 }
