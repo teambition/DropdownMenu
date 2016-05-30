@@ -20,7 +20,7 @@
 
 ## Communication
 
-- If you **need help**, please add issues. or send Email to <zhangxaiolian1991@gmai.com>
+- If you **need help**, please add issues. or send email to <zhangxiaolian1991@gmail.com>
 
 ## Installation
 
