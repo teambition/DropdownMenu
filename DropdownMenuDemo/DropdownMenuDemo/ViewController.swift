@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         items = [item1, item2, item3, item4]
         let menuView = DropdownMenu(navigationController: navigationController!, items: items, selectedRow: selectedRow)
         menuView.delegate = self
-        menuView.showMenu()
+        menuView.showMenu(onNavigaitionView: true)
     }
 }
 

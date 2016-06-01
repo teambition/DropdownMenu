@@ -113,7 +113,7 @@ public class DropdownMenu: UIView {
         barCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
 
-    public func showMenu() {
+    public func showMenu(onNavigaitionView onNavigaitionView: Bool = false) {
         if isShow {
             hideMenu()
             return
@@ -123,12 +123,17 @@ public class DropdownMenu: UIView {
         setupNavigationBarCoverView()
 
         var windowRootView: UIView
-        if let rootView = UIApplication.sharedApplication().keyWindow?.rootViewController?.view {
-            windowRootView = rootView
-            windowRootView.addSubview(self)
-        } else {
+        if onNavigaitionView {
             windowRootView = navigationController.view
             windowRootView.insertSubview(self, belowSubview: navigationController.navigationBar)
+        } else {
+            if let rootView = UIApplication.sharedApplication().keyWindow?.rootViewController?.view {
+                windowRootView = rootView
+                windowRootView.addSubview(self)
+            } else {
+                windowRootView = navigationController.view
+                windowRootView.insertSubview(self, belowSubview: navigationController.navigationBar)
+            }
         }
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: navigationController.navigationBar, attribute: .Bottom, multiplier: 1.0, constant: 0)])
