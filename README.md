@@ -2,7 +2,7 @@
 
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
- DropdownMenu is a dropdown menu for navigationController in Swift, It  can be associated in any please if have a navigationController
+ DropdownMenu is a dropdown menu for navigationController in Swift, It  can be associated in any place if have a navigationController
  
  ![](./DropdownMenu.gif)
 
