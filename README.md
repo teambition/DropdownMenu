@@ -41,7 +41,21 @@ To integrate DropdownMenu into your Xcode project using Carthage, specify it in 
 
     github "teambition/DropdownMenu"
 
-Run `carthage update` to build the framework and drag the built `DropdownMenu.framework` into your Xcode project.
+Run `carthage update` to build the framework 
+
+At last, you need to set up your Xcode project manually to add the DropdownMenu framework.
+
+On your application targets’ “General” settings tab, in the “Linked Frameworks and Libraries” section, drag and drop each framework you want to use from the Carthage/Build folder on disk.
+
+On your application targets’ “Build Phases” settings tab, click the “+” icon and choose “New Run Script Phase”. Create a Run Script with the following content:
+
+     /usr/local/bin/carthage copy-frameworks
+    
+and add the paths to the frameworks you want to use under “Input Files”:
+
+     $(SRCROOT)/Carthage/Build/iOS/DropdownMenu.framework
+
+For more information about how to use Carthage, please see its [project page](https://github.com/Carthage/Carthage)
 
 
 ## Usage
