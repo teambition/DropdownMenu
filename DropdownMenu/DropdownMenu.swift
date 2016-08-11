@@ -11,6 +11,7 @@ import UIKit
 public protocol DropdownMenuDelegate: class {
     func dropdownMenu(dropdownMenu: DropdownMenu, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell?
     func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    func dropdownMenuCancel(dropdownMenu: DropdownMenu)
 }
 
 public extension DropdownMenuDelegate {
@@ -19,6 +20,9 @@ public extension DropdownMenuDelegate {
     }
     
     func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    }
+    
+    func dropdownMenuCancel(dropdownMenu: DropdownMenu) {
     }
 }
 
@@ -161,6 +165,7 @@ public class DropdownMenu: UIView {
             self.backgroundColor = self.backgroudBeginColor
             self.tableView.frame.origin.y = -self.tableViewHeight
         }) { (finished) in
+            self.delegate?.dropdownMenuCancel(self)
             self.barCoverView.removeFromSuperview()
             self.removeFromSuperview()
             self.isShow = false

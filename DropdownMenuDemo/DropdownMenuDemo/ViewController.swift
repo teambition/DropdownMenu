@@ -73,4 +73,8 @@ extension ViewController: DropUpMenuDelegate {
             print("Display success")
         }
     }
+    
+    func dropUpMenuCancel(dropUpMenu: DropUpMenu) {
+        print("select cancel")
+    }
 }
