@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC4C1D681CF934B6006E36F5 /* DropdownMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4C1D671CF934B6006E36F5 /* DropdownMenu.framework */; };
-		AC4C1D691CF934B9006E36F5 /* DropdownMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4C1D671CF934B6006E36F5 /* DropdownMenu.framework */; };
-		AC4C1D6A1CF934B9006E36F5 /* DropdownMenu.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AC4C1D671CF934B6006E36F5 /* DropdownMenu.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AC28BA7F1D5BA287004F1663 /* DropdownMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC28BA7E1D5BA287004F1663 /* DropdownMenu.framework */; };
 		ACE6DB931CF741F6005C6667 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE6DB921CF741F6005C6667 /* AppDelegate.swift */; };
 		ACE6DB951CF741F6005C6667 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE6DB941CF741F6005C6667 /* ViewController.swift */; };
 		ACE6DB981CF741F6005C6667 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACE6DB961CF741F6005C6667 /* Main.storyboard */; };
@@ -52,7 +50,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AC4C1D6A1CF934B9006E36F5 /* DropdownMenu.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,7 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AC4C1D671CF934B6006E36F5 /* DropdownMenu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropdownMenu.framework; path = "../../../../Library/Developer/Xcode/DerivedData/DropdownMenu-elwexzlgcvbowbesmsdmavblsccq/Build/Products/Debug-iphoneos/DropdownMenu.framework"; sourceTree = "<group>"; };
+		AC28BA7E1D5BA287004F1663 /* DropdownMenu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropdownMenu.framework; path = "../../../../Library/Developer/Xcode/DerivedData/DropdownMenu-elwexzlgcvbowbesmsdmavblsccq/Build/Products/Debug-iphonesimulator/DropdownMenu.framework"; sourceTree = "<group>"; };
 		ACE6DB8F1CF741F6005C6667 /* DropdownMenuDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropdownMenuDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE6DB921CF741F6005C6667 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ACE6DB941CF741F6005C6667 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -81,8 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC4C1D691CF934B9006E36F5 /* DropdownMenu.framework in Frameworks */,
-				AC4C1D681CF934B6006E36F5 /* DropdownMenu.framework in Frameworks */,
+				AC28BA7F1D5BA287004F1663 /* DropdownMenu.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +102,7 @@
 		ACE6DB861CF741F6005C6667 = {
 			isa = PBXGroup;
 			children = (
-				AC4C1D671CF934B6006E36F5 /* DropdownMenu.framework */,
+				AC28BA7E1D5BA287004F1663 /* DropdownMenu.framework */,
 				ACE6DB911CF741F6005C6667 /* DropdownMenuDemo */,
 				ACE6DBA61CF741F6005C6667 /* DropdownMenuDemoTests */,
 				ACE6DBB11CF741F6005C6667 /* DropdownMenuDemoUITests */,
@@ -225,13 +221,16 @@
 				TargetAttributes = {
 					ACE6DB8E1CF741F6005C6667 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					ACE6DBA21CF741F6005C6667 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = ACE6DB8E1CF741F6005C6667;
 					};
 					ACE6DBAD1CF741F6005C6667 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = ACE6DB8E1CF741F6005C6667;
 					};
 				};
@@ -437,6 +436,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -448,6 +448,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -459,6 +460,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DropdownMenuDemo.app/DropdownMenuDemo";
 			};
 			name = Debug;
@@ -471,6 +473,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DropdownMenuDemo.app/DropdownMenuDemo";
 			};
 			name = Release;
@@ -482,6 +485,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = DropdownMenuDemo;
 			};
 			name = Debug;
@@ -493,6 +497,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = DropdownMenuDemo;
 			};
 			name = Release;
