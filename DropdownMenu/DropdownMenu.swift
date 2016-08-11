@@ -160,12 +160,14 @@ public class DropdownMenu: UIView {
             }, completion: nil)
     }
 
-    public func hideMenu() {
+    public func hideMenu(isSelectAction isSelectAction: Bool = false) {
         UIView.animateWithDuration(animateDuration, animations: {
             self.backgroundColor = self.backgroudBeginColor
             self.tableView.frame.origin.y = -self.tableViewHeight
         }) { (finished) in
-            self.delegate?.dropdownMenuCancel(self)
+            if !isSelectAction {
+                self.delegate?.dropdownMenuCancel(self)
+            }
             self.barCoverView.removeFromSuperview()
             self.removeFromSuperview()
             self.isShow = false
@@ -241,7 +243,7 @@ extension DropdownMenu: UITableViewDelegate {
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        hideMenu()
+        hideMenu(isSelectAction: true)
         delegate?.dropdownMenu(self, didSelectRowAtIndexPath: indexPath)
     }
 }
