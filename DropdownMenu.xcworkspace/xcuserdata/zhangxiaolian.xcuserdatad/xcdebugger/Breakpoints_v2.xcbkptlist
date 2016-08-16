@@ -57,7 +57,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "172"
             endingLineNumber = "172"
-            landmarkName = "hideMenu(_:)"
+            landmarkName = "hideMenu(isSelectAction:)"
             landmarkType = "5">
             <Locations>
                <Location
