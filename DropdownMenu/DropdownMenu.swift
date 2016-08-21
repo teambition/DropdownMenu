@@ -15,15 +15,9 @@ public protocol DropdownMenuDelegate: class {
 }
 
 public extension DropdownMenuDelegate {
-    func dropdownMenu(dropdownMenu: DropdownMenu, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? {
-        return nil
-    }
-    
-    func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    }
-    
-    func dropdownMenuCancel(dropdownMenu: DropdownMenu) {
-    }
+    func dropdownMenu(dropdownMenu: DropdownMenu, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? { return nil }
+    func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) { }
+    func dropdownMenuCancel(dropdownMenu: DropdownMenu) { }
 }
 
 public class DropdownMenu: UIView {
@@ -33,6 +27,10 @@ public class DropdownMenu: UIView {
     public var tableView: UITableView!
     private var barCoverView: UIView!
     private var isShow = false
+    private var addedWindow: UIWindow?
+    private var windowRootView: UIView?
+    private var topConstraint: NSLayoutConstraint?
+    private var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
 
     public weak var delegate: DropdownMenuDelegate?
     public var animateDuration: NSTimeInterval = 0.25
@@ -46,7 +44,6 @@ public class DropdownMenu: UIView {
     public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     public var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
     public var displaySelected: Bool = true
-
 
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -63,8 +60,31 @@ public class DropdownMenu: UIView {
         setupGestureView()
         setupTableView()
         setupTopSeperatorView()
-    }
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: UIApplicationWillChangeStatusBarOrientationNotification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func updateForOrientationChange(nofication: NSNotification) {
+        if let oriention = nofication.userInfo?[UIApplicationStatusBarOrientationUserInfoKey] as? Int {
+            var topOffset: CGFloat = 64.0
+            switch oriention {
+            case UIInterfaceOrientation.LandscapeLeft.rawValue, UIInterfaceOrientation.LandscapeRight.rawValue:
+                topOffset = 44.0
+            default:
+                topOffset = 64.0
+            }
+            topConstraint?.constant = topOffset
+            navigationBarCoverViewHeightConstraint?.constant = topOffset
+            UIView.animateWithDuration(0.2, animations: { 
+                self.windowRootView?.layoutIfNeeded()
+            })
+        }
+    }
+    
     private func setupGestureView() {
         let gestureView = UIView()
         gestureView.backgroundColor = UIColor.clearColor()
@@ -110,17 +130,18 @@ public class DropdownMenu: UIView {
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: tableView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: 0)])
     }
 
-    private func setupNavigationBarCoverView() {
+    private func setupNavigationBarCoverView(onView: UIView) {
         barCoverView = UIView()
         barCoverView.backgroundColor = UIColor.clearColor()
-        navigationController.view.addSubview(barCoverView)
+        onView.addSubview(barCoverView)
         barCoverView.translatesAutoresizingMaskIntoConstraints = false
 
         let navigationBar = navigationController.navigationBar
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Top, relatedBy: .Equal, toItem: navigationBar, attribute: .Top, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Bottom, relatedBy: .Equal, toItem: navigationBar, attribute: .Bottom, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Left, relatedBy: .Equal, toItem: navigationBar, attribute: .Left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Right, relatedBy: .Equal, toItem: navigationBar, attribute: .Right, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Top, relatedBy: .Equal, toItem: onView, attribute: .Top, multiplier: 1.0, constant: 0)])
+        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: navigationBar.frame.height + navigationBar.frame.origin.y)
+        NSLayoutConstraint.activateConstraints([navigationBarCoverViewHeightConstraint!])
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Left, relatedBy: .Equal, toItem: onView, attribute: .Left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Right, relatedBy: .Equal, toItem: onView, attribute: .Right, multiplier: 1.0, constant: 0)])
         barCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
 
@@ -131,23 +152,22 @@ public class DropdownMenu: UIView {
         }
 
         isShow = true
-        setupNavigationBarCoverView()
-
-        var windowRootView: UIView
-        if onNavigaitionView {
-            windowRootView = navigationController.view
-            windowRootView.insertSubview(self, belowSubview: navigationController.navigationBar)
+        
+        if let rootView = UIApplication.sharedApplication().keyWindow {
+            windowRootView = rootView
         } else {
-            if let rootView = UIApplication.sharedApplication().keyWindow {
-                windowRootView = rootView
-                windowRootView.addSubview(self)
-            } else {
-                windowRootView = navigationController.view
-                windowRootView.insertSubview(self, belowSubview: navigationController.navigationBar)
-            }
+            addedWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+            addedWindow?.rootViewController = UIViewController()
+            addedWindow?.hidden = false
+            addedWindow?.makeKeyAndVisible()
+            windowRootView = addedWindow!
         }
+        setupNavigationBarCoverView(windowRootView!)
+        windowRootView?.addSubview(self)
+        
         translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: navigationController.navigationBar, attribute: .Bottom, multiplier: 1.0, constant: 0)])
+        topConstraint = NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: windowRootView, attribute: .Top, multiplier: 1.0, constant: navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y)
+        NSLayoutConstraint.activateConstraints([topConstraint!])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: windowRootView, attribute: .Bottom, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Left, relatedBy: .Equal, toItem: windowRootView, attribute: .Left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Right, relatedBy: .Equal, toItem: windowRootView, attribute: .Right, multiplier: 1.0, constant: 0)])
@@ -171,6 +191,11 @@ public class DropdownMenu: UIView {
             self.barCoverView.removeFromSuperview()
             self.removeFromSuperview()
             self.isShow = false
+            
+            if let _ = self.addedWindow {
+                self.addedWindow?.hidden = true
+                UIApplication.sharedApplication().keyWindow?.makeKeyWindow()
+            }
         }
     }
 }

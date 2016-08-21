@@ -64,30 +64,30 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "DropdownMenu.DropUpMenu.hideMenu () -&gt; ()"
+                  symbolName = "DropdownMenu.DropUpMenu.hideMenu (isSelectAction : Swift.Bool) -&gt; ()"
                   moduleName = "DropdownMenu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "492576281.192695"
+                  timestampString = "493492770.320487"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "157"
-                  endingLineNumber = "157"
-                  offsetFromSymbolStart = "15">
+                  startingLineNumber = "172"
+                  endingLineNumber = "172"
+                  offsetFromSymbolStart = "26">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "DropdownMenu.DropUpMenu.(hideMenu () -&gt; ()).(closure #1)"
+                  symbolName = "DropdownMenu.DropUpMenu.(hideMenu (isSelectAction : Swift.Bool) -&gt; ()).(closure #1)"
                   moduleName = "DropdownMenu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "492576281.19287"
+                  timestampString = "493492770.320681"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "158"
-                  endingLineNumber = "158"
+                  startingLineNumber = "173"
+                  endingLineNumber = "173"
                   offsetFromSymbolStart = "15">
                </Location>
             </Locations>
