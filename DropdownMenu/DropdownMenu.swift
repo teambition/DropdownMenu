@@ -9,41 +9,41 @@
 import UIKit
 
 public protocol DropdownMenuDelegate: class {
-    func dropdownMenu(dropdownMenu: DropdownMenu, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell?
-    func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath)
-    func dropdownMenuCancel(dropdownMenu: DropdownMenu)
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell?
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath)
+    func dropdownMenuCancel(_ dropdownMenu: DropdownMenu)
 }
 
 public extension DropdownMenuDelegate {
-    func dropdownMenu(dropdownMenu: DropdownMenu, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? { return nil }
-    func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) { }
-    func dropdownMenuCancel(dropdownMenu: DropdownMenu) { }
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell? { return nil }
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath) { }
+    func dropdownMenuCancel(_ dropdownMenu: DropdownMenu) { }
 }
 
-public class DropdownMenu: UIView {
-    private weak var navigationController: UINavigationController!
-    private var items: [DropdownItem] = []
-    private var selectedRow: Int
-    public var tableView: UITableView!
-    private var barCoverView: UIView!
-    private var isShow = false
-    private var addedWindow: UIWindow?
-    private var windowRootView: UIView?
-    private var topConstraint: NSLayoutConstraint?
-    private var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+open class DropdownMenu: UIView {
+    fileprivate weak var navigationController: UINavigationController!
+    fileprivate var items: [DropdownItem] = []
+    fileprivate var selectedRow: Int
+    open var tableView: UITableView!
+    fileprivate var barCoverView: UIView!
+    fileprivate var isShow = false
+    fileprivate var addedWindow: UIWindow?
+    fileprivate var windowRootView: UIView?
+    fileprivate var topConstraint: NSLayoutConstraint?
+    fileprivate var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
 
-    public weak var delegate: DropdownMenuDelegate?
-    public var animateDuration: NSTimeInterval = 0.25
-    public var backgroudBeginColor: UIColor = UIColor.blackColor().colorWithAlphaComponent(0)
-    public var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
-    public var rowHeight: CGFloat = 50
-    public var tableViewHeight: CGFloat = 0
-    public var defaultBottonMargin: CGFloat = 150
-    public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
-    public var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-    public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
-    public var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
-    public var displaySelected: Bool = true
+    open weak var delegate: DropdownMenuDelegate?
+    open var animateDuration: TimeInterval = 0.25
+    open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
+    open var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
+    open var rowHeight: CGFloat = 50
+    open var tableViewHeight: CGFloat = 0
+    open var defaultBottonMargin: CGFloat = 150
+    open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
+    open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+    open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
+    open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
+    open var displaySelected: Bool = true
 
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -61,55 +61,55 @@ public class DropdownMenu: UIView {
         setupTableView()
         setupTopSeperatorView()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: UIApplicationWillChangeStatusBarOrientationNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    func updateForOrientationChange(nofication: NSNotification) {
-        if let oriention = nofication.userInfo?[UIApplicationStatusBarOrientationUserInfoKey] as? Int {
+    func updateForOrientationChange(_ nofication: Notification) {
+        if let oriention = (nofication as NSNotification).userInfo?[UIApplicationStatusBarOrientationUserInfoKey] as? Int {
             var topOffset: CGFloat = 64.0
             switch oriention {
-            case UIInterfaceOrientation.LandscapeLeft.rawValue, UIInterfaceOrientation.LandscapeRight.rawValue:
+            case UIInterfaceOrientation.landscapeLeft.rawValue, UIInterfaceOrientation.landscapeRight.rawValue:
                 topOffset = 44.0
             default:
                 topOffset = 64.0
             }
             topConstraint?.constant = topOffset
             navigationBarCoverViewHeightConstraint?.constant = topOffset
-            UIView.animateWithDuration(0.2, animations: { 
+            UIView.animate(withDuration: 0.2, animations: { 
                 self.windowRootView?.layoutIfNeeded()
             })
         }
     }
     
-    private func setupGestureView() {
+    fileprivate func setupGestureView() {
         let gestureView = UIView()
-        gestureView.backgroundColor = UIColor.clearColor()
+        gestureView.backgroundColor = UIColor.clear
         addSubview(gestureView)
         gestureView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: gestureView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: gestureView, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: gestureView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: gestureView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: gestureView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: gestureView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: gestureView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: gestureView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
 
         gestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
 
-    private func setupTopSeperatorView() {
+    fileprivate func setupTopSeperatorView() {
         let seperatorView = UIView()
         seperatorView.backgroundColor = tableViewSeperatorColor
         addSubview(seperatorView)
         seperatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: seperatorView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: seperatorView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: seperatorView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: seperatorView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 0.5)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.5)])
     }
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         tableViewHeight = CGFloat(items.count) * rowHeight
         let navigationBarFrame: CGRect = navigationController.navigationBar.frame
         let maxHeight = navigationController.view.frame.height - navigationBarFrame.height + navigationBarFrame.origin.y - defaultBottonMargin
@@ -117,35 +117,35 @@ public class DropdownMenu: UIView {
             tableViewHeight = maxHeight
         }
 
-        tableView = UITableView(frame: CGRect.zero, style: .Grouped)
+        tableView = UITableView(frame: CGRect.zero, style: .grouped)
         tableView.separatorColor = tableViewSeperatorColor
         tableView.backgroundColor = tableViewBackgroundColor
         tableView?.delegate = self
         tableView?.dataSource = self
         addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: tableView, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant:0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: tableView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: tableView, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: tableView, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
     }
 
-    private func setupNavigationBarCoverView(onView: UIView) {
+    fileprivate func setupNavigationBarCoverView(on view: UIView) {
         barCoverView = UIView()
-        barCoverView.backgroundColor = UIColor.clearColor()
-        onView.addSubview(barCoverView)
+        barCoverView.backgroundColor = UIColor.clear
+        view.addSubview(barCoverView)
         barCoverView.translatesAutoresizingMaskIntoConstraints = false
 
         let navigationBar = navigationController.navigationBar
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Top, relatedBy: .Equal, toItem: onView, attribute: .Top, multiplier: 1.0, constant: 0)])
-        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: navigationBar.frame.height + navigationBar.frame.origin.y)
-        NSLayoutConstraint.activateConstraints([navigationBarCoverViewHeightConstraint!])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Left, relatedBy: .Equal, toItem: onView, attribute: .Left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Right, relatedBy: .Equal, toItem: onView, attribute: .Right, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0)])
+        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: navigationBar.frame.height + navigationBar.frame.origin.y)
+        NSLayoutConstraint.activate([navigationBarCoverViewHeightConstraint!])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
         barCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
 
-    public func showMenu(onNavigaitionView onNavigaitionView: Bool = false) {
+    open func showMenu(isOnNavigaitionView: Bool = false) {
         if isShow {
             hideMenu()
             return
@@ -153,38 +153,38 @@ public class DropdownMenu: UIView {
 
         isShow = true
         
-        if let rootView = UIApplication.sharedApplication().keyWindow {
+        if let rootView = UIApplication.shared.keyWindow {
             windowRootView = rootView
         } else {
-            addedWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+            addedWindow = UIWindow(frame: UIScreen.main.bounds)
             addedWindow?.rootViewController = UIViewController()
-            addedWindow?.hidden = false
+            addedWindow?.isHidden = false
             addedWindow?.makeKeyAndVisible()
             windowRootView = addedWindow!
         }
-        setupNavigationBarCoverView(windowRootView!)
+        setupNavigationBarCoverView(on: windowRootView!)
         windowRootView?.addSubview(self)
         
         translatesAutoresizingMaskIntoConstraints = false
-        topConstraint = NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: windowRootView, attribute: .Top, multiplier: 1.0, constant: navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y)
-        NSLayoutConstraint.activateConstraints([topConstraint!])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: windowRootView, attribute: .Bottom, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Left, relatedBy: .Equal, toItem: windowRootView, attribute: .Left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Right, relatedBy: .Equal, toItem: windowRootView, attribute: .Right, multiplier: 1.0, constant: 0)])
+        topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: windowRootView, attribute: .top, multiplier: 1.0, constant: navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y)
+        NSLayoutConstraint.activate([topConstraint!])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: self, attribute: .bottom, relatedBy: .equal, toItem: windowRootView, attribute: .bottom, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: self, attribute: .left, relatedBy: .equal, toItem: windowRootView, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: self, attribute: .right, relatedBy: .equal, toItem: windowRootView, attribute: .right, multiplier: 1.0, constant: 0)])
 
         backgroundColor = backgroudBeginColor
         self.tableView.frame.origin.y = -self.tableViewHeight
-        UIView.animateWithDuration(animateDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7<<16), animations: {
+        UIView.animate(withDuration: animateDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7<<16), animations: {
             self.backgroundColor = self.backgroudEndColor
             self.tableView.frame.origin.y = 0
             }, completion: nil)
     }
 
-    public func hideMenu(isSelectAction isSelectAction: Bool = false) {
-        UIView.animateWithDuration(animateDuration, animations: {
+    open func hideMenu(isSelectAction: Bool = false) {
+        UIView.animate(withDuration: animateDuration, animations: {
             self.backgroundColor = self.backgroudBeginColor
             self.tableView.frame.origin.y = -self.tableViewHeight
-        }) { (finished) in
+        }, completion: { (finished) in
             if !isSelectAction {
                 self.delegate?.dropdownMenuCancel(self)
             }
@@ -193,39 +193,40 @@ public class DropdownMenu: UIView {
             self.isShow = false
             
             if let _ = self.addedWindow {
-                self.addedWindow?.hidden = true
-                UIApplication.sharedApplication().keyWindow?.makeKeyWindow()
+                self.addedWindow?.isHidden = true
+                UIApplication.shared.keyWindow?.makeKey()
             }
-        }
+        }) 
     }
 }
 
 extension DropdownMenu: UITableViewDataSource {
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
 
-    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    @objc(tableView:heightForRowAtIndexPath:)
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return rowHeight
     }
 
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let customCell = delegate?.dropdownMenu(self, cellForRowAtIndexPath: indexPath) {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let customCell = delegate?.dropdownMenu(self, cellForRowAt: indexPath) {
             return customCell
         }
-        let item = items[indexPath.row]
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "dropdownMenuCell")
+        let item = items[(indexPath as NSIndexPath).row]
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "dropdownMenuCell")
 
         switch item.style {
-        case .Default:
+        case .default:
             cell.textLabel?.textColor = textColor
             if let image = item.image {
                 cell.imageView?.image = image
             }
-        case .Highlight:
+        case .highlight:
             cell.textLabel?.textColor = highlightColor
             if let image = item.image {
-                let highlightImage = image.imageWithRenderingMode(.AlwaysTemplate)
+                let highlightImage = image.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = highlightImage
                 cell.imageView?.tintColor = highlightColor
             }
@@ -233,10 +234,10 @@ extension DropdownMenu: UITableViewDataSource {
 
         cell.textLabel?.text = item.title
         cell.tintColor = highlightColor
-        if displaySelected && indexPath.row == selectedRow {
-            cell.accessoryType = .Checkmark
+        if displaySelected && (indexPath as NSIndexPath).row == selectedRow {
+            cell.accessoryType = .checkmark
         } else {
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
 
         if let accesoryImage = item.accessoryImage {
@@ -248,27 +249,27 @@ extension DropdownMenu: UITableViewDataSource {
 }
 
 extension DropdownMenu: UITableViewDelegate {
-    public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 
-    public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
 
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if displaySelected {
-            let item = items[indexPath.row]
+            let item = items[(indexPath as NSIndexPath).row]
             if item.accessoryImage  == nil {
-                let previousSelectedcell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: selectedRow, inSection: 0))
-                previousSelectedcell?.accessoryType = .None
-                selectedRow = indexPath.row
-                let cell = tableView.cellForRowAtIndexPath(indexPath)
-                cell?.accessoryType = .Checkmark
+                let previousSelectedcell = tableView.cellForRow(at: IndexPath(row: selectedRow, section: 0))
+                previousSelectedcell?.accessoryType = .none
+                selectedRow = (indexPath as NSIndexPath).row
+                let cell = tableView.cellForRow(at: indexPath)
+                cell?.accessoryType = .checkmark
             }
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         hideMenu(isSelectAction: true)
-        delegate?.dropdownMenu(self, didSelectRowAtIndexPath: indexPath)
+        delegate?.dropdownMenu(self, didSelectRowAt: indexPath)
     }
 }

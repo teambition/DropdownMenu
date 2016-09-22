@@ -9,17 +9,17 @@
 import UIKit
 
 public enum DropdownItemStyle: Int {
-    case Default
-    case Highlight
+    case `default`
+    case highlight
 }
 
-public class DropdownItem {
-    public var image: UIImage?
-    public var title: String
-    public var style: DropdownItemStyle
-    public var accessoryImage: UIImage?
+open class DropdownItem {
+    open var image: UIImage?
+    open var title: String
+    open var style: DropdownItemStyle
+    open var accessoryImage: UIImage?
 
-    public init(image: UIImage? = nil, title: String, style: DropdownItemStyle = .Default, accessoryImage: UIImage? = nil) {
+    public init(image: UIImage? = nil, title: String, style: DropdownItemStyle = .default, accessoryImage: UIImage? = nil) {
         self.image = image
         self.title = title
         self.style = style

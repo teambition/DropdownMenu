@@ -25,8 +25,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "30"
             endingLineNumber = "30"
-            landmarkName = "dropUpMenu(_:didSelectRowAtIndexPath:)"
-            landmarkType = "5">
+            landmarkName = "dropUpMenu(_:didSelectRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -41,8 +41,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "249"
             endingLineNumber = "249"
-            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
-            landmarkType = "5">
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,7 +58,7 @@
             startingLineNumber = "172"
             endingLineNumber = "172"
             landmarkName = "hideMenu(isSelectAction:)"
-            landmarkType = "5">
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
@@ -68,12 +68,12 @@
                   moduleName = "DropdownMenu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "493492770.320487"
+                  timestampString = "496209692.50319"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "172"
                   endingLineNumber = "172"
-                  offsetFromSymbolStart = "26">
+                  offsetFromSymbolStart = "28">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -83,12 +83,12 @@
                   moduleName = "DropdownMenu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "493492770.320681"
+                  timestampString = "496209692.504529"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "173"
                   endingLineNumber = "173"
-                  offsetFromSymbolStart = "15">
+                  offsetFromSymbolStart = "16">
                </Location>
             </Locations>
          </BreakpointContent>

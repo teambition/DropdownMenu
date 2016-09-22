@@ -22,59 +22,59 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func showMenu(sender: UIBarButtonItem) {
+    
+    @IBAction func showMenu(_ sender: UIBarButtonItem) {
         let item1 = DropdownItem(title: "NO Image")
         let item2 = DropdownItem(image: UIImage(named: "file")!, title: "File")
-        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .Highlight)
-        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .Highlight, accessoryImage: UIImage(named: "accessory")!)
-
+        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .highlight)
+        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .highlight, accessoryImage: UIImage(named: "accessory")!)
+        
         items = [item1, item2, item3, item4]
         let menuView = DropdownMenu(navigationController: navigationController!, items: items, selectedRow: selectedRow)
         menuView.delegate = self
-        menuView.showMenu(onNavigaitionView: false)
+        menuView.showMenu()
     }
     
-    @IBAction func dropUpAction(sender: AnyObject) {
+    @IBAction func dropUpAction(_ sender: UIBarButtonItem) {
         let item1 = DropdownItem(title: "NO Image")
         let item2 = DropdownItem(image: UIImage(named: "file")!, title: "File")
-        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .Highlight)
-        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .Highlight, accessoryImage: UIImage(named: "accessory")!)
+        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .highlight)
+        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .highlight, accessoryImage: UIImage(named: "accessory")!)
         
         items = [item1, item2, item3, item4]
         let menuView = DropUpMenu(items: items, selectedRow: 0, bottomOffsetY: self.tabBarController?.tabBar.frame.height ?? 0)
         menuView.delegate = self
         menuView.showMenu()
     }
-    
 }
 
 extension ViewController: DropdownMenuDelegate {
-    func dropdownMenu(dropdownMenu: DropdownMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath) {
         print("DropdownMenu didselect \(indexPath.row) text:\(items[indexPath.row].title)")
         if indexPath.row != items.count - 1 {
             self.selectedRow = indexPath.row
         }
 
-        let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row].title)", preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+        let alertConroller = UIAlertController(title: "Nice", message: "You choose \(items[indexPath.row].title)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertConroller.addAction(okAction)
-        presentViewController(alertConroller, animated: true) {
+        present(alertConroller, animated: true) {
             print("Display success")
         }
     }
 }
 
 extension ViewController: DropUpMenuDelegate {
-    func dropUpMenu(dropUpMenu: DropUpMenu, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let alertConroller = UIAlertController(title: "Nice", message: "DropUpMenu didselect \(indexPath.row) text:\(items[indexPath.row].title)", preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+    func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath) {
+        let alertConroller = UIAlertController(title: "Nice", message: "DropUpMenu didselect \(indexPath.row) text:\(items[indexPath.row].title)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertConroller.addAction(okAction)
-        presentViewController(alertConroller, animated: true) {
+        present(alertConroller, animated: true) {
             print("Display success")
         }
     }
     
-    func dropUpMenuCancel(dropUpMenu: DropUpMenu) {
+    func dropUpMenuCancel(_ dropUpMenu: DropUpMenu) {
         print("select cancel")
     }
 }
