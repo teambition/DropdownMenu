@@ -194,10 +194,6 @@ extension DropUpMenu: UITableViewDataSource {
         return items.count
     }
     
-    @objc(tableView:heightForRowAtIndexPath:) public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return rowHeight
-    }
-    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let customCell = delegate?.dropUpMenu(self, cellForRowAt: indexPath) {
             return customCell
@@ -237,6 +233,10 @@ extension DropUpMenu: UITableViewDataSource {
 }
 
 extension DropUpMenu: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return rowHeight
+    }
+
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }

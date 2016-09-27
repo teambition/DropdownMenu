@@ -205,11 +205,6 @@ extension DropdownMenu: UITableViewDataSource {
         return items.count
     }
 
-    @objc(tableView:heightForRowAtIndexPath:)
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return rowHeight
-    }
-
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let customCell = delegate?.dropdownMenu(self, cellForRowAt: indexPath) {
             return customCell
@@ -249,6 +244,10 @@ extension DropdownMenu: UITableViewDataSource {
 }
 
 extension DropdownMenu: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return rowHeight
+    }
+    
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat.leastNormalMagnitude
     }
