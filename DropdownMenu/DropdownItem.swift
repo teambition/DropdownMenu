@@ -26,3 +26,13 @@ open class DropdownItem {
         self.accessoryImage = accessoryImage
     }
 }
+
+public struct DropdownSection {
+    public var sectionIdentifier: String
+    public var items: [DropdownItem]
+
+    public init (sectionIdentifier: String, items: [DropdownItem]) {
+        self.items = items
+        self.sectionIdentifier = sectionIdentifier
+    }
+}
