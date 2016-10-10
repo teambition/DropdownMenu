@@ -69,6 +69,8 @@ import DropdownMenu
 
 ### Add code for your action
 
+#### Without  Section
+
 ```swift
 func showMenu(sender: UIBarButtonItem) {
         let item1 = DropdownItem(title: "NO Image")
@@ -80,6 +82,24 @@ func showMenu(sender: UIBarButtonItem) {
         let menuView = DropdownMenu(navigationController: navigationController!, items: items, selectedRow: selectedRow)
         menuView.delegate = self
         menuView.showMenu()
+    }
+```
+
+#### With Section
+
+```swift
+ @IBAction func showMenu(_ sender: UIBarButtonItem) {
+        let item1 = DropdownItem(title: "NO Image")
+        let item2 = DropdownItem(image: UIImage(named: "file")!, title: "File")
+        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .highlight)
+        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .highlight, accessoryImage: UIImage(named: "accessory")!)
+        
+        let section0 = DropdownSection(sectionIdentifier: "Teambition", items: [item1, item2])
+        let section1 = DropdownSection(sectionIdentifier: "Space", items: [item3, item4])
+
+        let menuView = DropdownMenu(navigationController: navigationController!, sections: [section0, section1], selectedIndexPath: selectedIndexPath)
+        menuView?.delegate = self
+        menuView?.showMenu()
     }
 ```
 
