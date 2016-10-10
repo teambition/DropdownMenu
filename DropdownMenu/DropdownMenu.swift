@@ -22,8 +22,8 @@ public extension DropdownMenuDelegate {
 
 open class DropdownMenu: UIView {
     fileprivate weak var navigationController: UINavigationController!
-    fileprivate var items: [DropdownItem] = []
-    fileprivate var selectedRow: Int
+    fileprivate var sections: [DropdownSection] = []
+    fileprivate var selectedIndexPath: IndexPath
     open var tableView: UITableView!
     fileprivate var barCoverView: UIView!
     fileprivate var isShow = false
@@ -37,6 +37,7 @@ open class DropdownMenu: UIView {
     open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
     open var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
     open var rowHeight: CGFloat = 50
+    open var sectionHeaderHeight: CGFloat = 44
     open var tableViewHeight: CGFloat = 0
     open var defaultBottonMargin: CGFloat = 150
     open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
@@ -44,6 +45,10 @@ open class DropdownMenu: UIView {
     open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
     open var displaySelected: Bool = true
+    open var displaySectionHeader: Bool = false
+    
+    // section header sytle
+    open var sectionHeaderStyle: SectionHeaderStyle = SectionHeaderStyle()
 
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -51,8 +56,8 @@ open class DropdownMenu: UIView {
 
     public init(navigationController: UINavigationController, items: [DropdownItem], selectedRow: Int = 0) {
         self.navigationController = navigationController
-        self.items = items
-        self.selectedRow = selectedRow
+        self.sections = [DropdownSection(sectionIdentifier: "", items: items)]
+        self.selectedIndexPath = IndexPath(row: selectedRow, section: 0)
         
         super.init(frame: CGRect.zero)
 
@@ -61,6 +66,22 @@ open class DropdownMenu: UIView {
         setupTableView()
         setupTopSeperatorView()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
+    }
+
+    public init(navigationController: UINavigationController, sections: [DropdownSection], selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0), dispalySectionHeader: Bool = true, sectionHeaderStyle: SectionHeaderStyle = SectionHeaderStyle()) {
+        self.navigationController = navigationController
+        self.sections = sections
+        self.selectedIndexPath = selectedIndexPath
+        self.displaySectionHeader = dispalySectionHeader
+        
+        super.init(frame: CGRect.zero)
+        
+        clipsToBounds = true
+        setupGestureView()
+        setupTableView()
+        setupTopSeperatorView()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
     }
     
@@ -110,7 +131,7 @@ open class DropdownMenu: UIView {
     }
 
     fileprivate func setupTableView() {
-        tableViewHeight = CGFloat(items.count) * rowHeight
+        tableViewHeight = tableviewHeight()
         let navigationBarFrame: CGRect = navigationController.navigationBar.frame
         let maxHeight = navigationController.view.frame.height - navigationBarFrame.height + navigationBarFrame.origin.y - defaultBottonMargin
         if tableViewHeight > maxHeight {
@@ -143,6 +164,17 @@ open class DropdownMenu: UIView {
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
         barCoverView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
+    }
+
+    fileprivate func tableviewHeight() -> CGFloat {
+        var height: CGFloat = 0
+        if displaySectionHeader {
+            height += sectionHeaderHeight * CGFloat(sections.count)
+        }
+        for section in sections {
+            height += CGFloat(section.items.count) * rowHeight
+        }
+        return height
     }
 
     open func showMenu(isOnNavigaitionView: Bool = false) {
@@ -201,15 +233,19 @@ open class DropdownMenu: UIView {
 }
 
 extension DropdownMenu: UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return sections[section].items.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let customCell = delegate?.dropdownMenu(self, cellForRowAt: indexPath) {
             return customCell
         }
-        let item = items[(indexPath as NSIndexPath).row]
+        let item = sections[indexPath.section].items[indexPath.row]
         let cell = UITableViewCell(style: .default, reuseIdentifier: "dropdownMenuCell")
 
         switch item.style {
@@ -229,7 +265,7 @@ extension DropdownMenu: UITableViewDataSource {
 
         cell.textLabel?.text = item.title
         cell.tintColor = highlightColor
-        if displaySelected && (indexPath as NSIndexPath).row == selectedRow {
+        if displaySelected && indexPath == selectedIndexPath {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -241,15 +277,19 @@ extension DropdownMenu: UITableViewDataSource {
 
         return cell
     }
+
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return displaySectionHeader ? sections[section].sectionIdentifier : nil
+    }
 }
 
 extension DropdownMenu: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return rowHeight
     }
-    
+
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return displaySectionHeader ? sectionHeaderHeight : CGFloat.leastNormalMagnitude
     }
 
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -258,11 +298,11 @@ extension DropdownMenu: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if displaySelected {
-            let item = items[(indexPath as NSIndexPath).row]
+            let item = sections[indexPath.section].items[indexPath.row]
             if item.accessoryImage  == nil {
-                let previousSelectedcell = tableView.cellForRow(at: IndexPath(row: selectedRow, section: 0))
+                let previousSelectedcell = tableView.cellForRow(at: selectedIndexPath)
                 previousSelectedcell?.accessoryType = .none
-                selectedRow = (indexPath as NSIndexPath).row
+                selectedIndexPath = indexPath
                 let cell = tableView.cellForRow(at: indexPath)
                 cell?.accessoryType = .checkmark
             }
@@ -270,5 +310,11 @@ extension DropdownMenu: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         hideMenu(isSelectAction: true)
         delegate?.dropdownMenu(self, didSelectRowAt: indexPath)
+    }
+
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionHeader = SectionHeader(style: sectionHeaderStyle)
+        sectionHeader.titleLabel.text = sections[section].sectionIdentifier
+        return sectionHeader
     }
 }
