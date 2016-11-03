@@ -47,6 +47,7 @@ open class DropdownMenu: UIView {
     open var defaultBottonMargin: CGFloat = 150
     open var topOffsetY: CGFloat = 0
     
+    open var textFont: UIFont = UIFont.systemFont(ofSize: 15.0)
     open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
@@ -271,6 +272,7 @@ extension DropdownMenu: UITableViewDataSource {
         }
 
         cell.textLabel?.text = item.title
+        cell.textLabel?.font = textFont
         cell.tintColor = highlightColor
         if displaySelected && indexPath == selectedIndexPath {
             cell.accessoryType = .checkmark
