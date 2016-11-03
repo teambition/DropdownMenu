@@ -68,12 +68,12 @@
                   moduleName = "DropdownMenu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "496209692.50319"
+                  timestampString = "499850799.731409"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "172"
                   endingLineNumber = "172"
-                  offsetFromSymbolStart = "28">
+                  offsetFromSymbolStart = "26">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -83,12 +83,12 @@
                   moduleName = "DropdownMenu"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "496209692.504529"
+                  timestampString = "499850799.73326"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "173"
                   endingLineNumber = "173"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "15">
                </Location>
             </Locations>
          </BreakpointContent>

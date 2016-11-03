@@ -31,6 +31,11 @@ open class DropdownMenu: UIView {
     fileprivate var windowRootView: UIView?
     fileprivate var topConstraint: NSLayoutConstraint?
     fileprivate var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+    fileprivate let portraitTopOffset: CGFloat = 64.0
+    fileprivate let landscapeTopOffset: CGFloat = 32.0
+    fileprivate var topLayoutConstraintConstant: CGFloat {
+        return navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y + topOffsetY
+    }
 
     open weak var delegate: DropdownMenuDelegate?
     open var animateDuration: TimeInterval = 0.25
@@ -40,13 +45,15 @@ open class DropdownMenu: UIView {
     open var sectionHeaderHeight: CGFloat = 44
     open var tableViewHeight: CGFloat = 0
     open var defaultBottonMargin: CGFloat = 150
+    open var topOffsetY: CGFloat = 0
+    
     open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
+    
     open var displaySelected: Bool = true
     open var displaySectionHeader: Bool = false
-    
     // section header sytle
     open var sectionHeaderStyle: SectionHeaderStyle = SectionHeaderStyle()
 
@@ -90,17 +97,19 @@ open class DropdownMenu: UIView {
     }
     
     func updateForOrientationChange(_ nofication: Notification) {
+        print("UIApplicationWillChangeStatusBarOrientation")
         if let oriention = (nofication as NSNotification).userInfo?[UIApplicationStatusBarOrientationUserInfoKey] as? Int {
-            var topOffset: CGFloat = 64.0
+            var topOffset: CGFloat
             switch oriention {
             case UIInterfaceOrientation.landscapeLeft.rawValue, UIInterfaceOrientation.landscapeRight.rawValue:
-                topOffset = 44.0
+                topOffset = landscapeTopOffset
             default:
-                topOffset = 64.0
+                topOffset = portraitTopOffset
             }
+            topOffset = topOffset + topOffsetY
             topConstraint?.constant = topOffset
             navigationBarCoverViewHeightConstraint?.constant = topOffset
-            UIView.animate(withDuration: 0.2, animations: { 
+            UIView.animate(withDuration: 0.1, animations: {
                 self.windowRootView?.layoutIfNeeded()
             })
         }
@@ -132,8 +141,7 @@ open class DropdownMenu: UIView {
 
     fileprivate func setupTableView() {
         tableViewHeight = tableviewHeight()
-        let navigationBarFrame: CGRect = navigationController.navigationBar.frame
-        let maxHeight = navigationController.view.frame.height - navigationBarFrame.height + navigationBarFrame.origin.y - defaultBottonMargin
+        let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
         if tableViewHeight > maxHeight {
             tableViewHeight = maxHeight
         }
@@ -157,9 +165,8 @@ open class DropdownMenu: UIView {
         view.addSubview(barCoverView)
         barCoverView.translatesAutoresizingMaskIntoConstraints = false
 
-        let navigationBar = navigationController.navigationBar
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0)])
-        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: navigationBar.frame.height + navigationBar.frame.origin.y)
+        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: topLayoutConstraintConstant)
         NSLayoutConstraint.activate([navigationBarCoverViewHeightConstraint!])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
@@ -198,7 +205,7 @@ open class DropdownMenu: UIView {
         windowRootView?.addSubview(self)
         
         translatesAutoresizingMaskIntoConstraints = false
-        topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: windowRootView, attribute: .top, multiplier: 1.0, constant: navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y)
+        topConstraint = NSLayoutConstraint.init(item: self, attribute: .top, relatedBy: .equal, toItem: windowRootView, attribute: .top, multiplier: 1.0, constant: topLayoutConstraintConstant)
         NSLayoutConstraint.activate([topConstraint!])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: self, attribute: .bottom, relatedBy: .equal, toItem: windowRootView, attribute: .bottom, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: self, attribute: .left, relatedBy: .equal, toItem: windowRootView, attribute: .left, multiplier: 1.0, constant: 0)])

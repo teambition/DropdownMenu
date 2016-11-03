@@ -11,6 +11,8 @@ import DropdownMenu
 
 class ViewController: UIViewController {
     @IBOutlet weak var sectionSwitch: UISwitch!
+    @IBOutlet weak var offSetSlider: UISlider!
+    @IBOutlet weak var offsetLabel: UILabel!
 
     var showSection: Bool = true
     var selectedRow: Int = 0
@@ -25,6 +27,11 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func changeOffsetAction(_ sender: UISlider) {
+        offsetLabel.text = "DropDownMenu Top Offset: \(sender.value)"
+    }
+    
     
     @IBAction func showMenu(_ sender: UIBarButtonItem) {
         let item1 = DropdownItem(title: "NO Image")
@@ -43,6 +50,7 @@ class ViewController: UIViewController {
             items = [[item1, item2, item3, item4]]
             menuView = DropdownMenu(navigationController: navigationController!, items: [item1, item2, item3, item4], selectedRow: selectedRow)
         }
+        menuView?.topOffsetY = CGFloat(offSetSlider.value)
         menuView?.delegate = self
         menuView?.showMenu()
     }
