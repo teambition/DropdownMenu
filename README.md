@@ -7,6 +7,11 @@
  ![](./DropdownMenu.gif)
 
 ## Features
+
+- Dropdown Menu
+- Dropup Menu
+
+### Surpport cell type
 - **Only text cell**
 - **Image and text cell**
 - **Highlight cell**
@@ -25,6 +30,33 @@
 ## Installation
 
 > **Embedded frameworks require a minimum deployment target of iOS 8
+
+### CocoaPods
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+
+To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+target '<Your Target Name>' do
+    pod 'DropdownMenu'
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
 
 ### Carthage
 
@@ -60,16 +92,18 @@ For more information about how to use Carthage, please see its [project page](ht
 
 ## Usage
 
-### Import framework to your class
+#### Import framework to your class
 
 ```swift
 import DropdownMenu
 
 ```
 
-### Add code for your action
+### DropdownMenu
 
-#### Without  Section
+#### Add code for your action
+
+##### Without  Section
 
 ```swift
 func showMenu(sender: UIBarButtonItem) {
@@ -85,7 +119,7 @@ func showMenu(sender: UIBarButtonItem) {
     }
 ```
 
-#### With Section
+##### With Section
 
 ```swift
  @IBAction func showMenu(_ sender: UIBarButtonItem) {
@@ -103,7 +137,7 @@ func showMenu(sender: UIBarButtonItem) {
     }
 ```
 
-### Handle delegate
+#### Handle delegate
 
 ```swift
 extension ViewController: DropdownMenuDelegate {
@@ -112,6 +146,45 @@ extension ViewController: DropdownMenuDelegate {
     }
 }
 ```
+
+### DropupMenu
+
+#### Add code for your action
+
+```swift
+@IBAction func dropUpAction(_ sender: UIBarButtonItem) {
+        let item1 = DropdownItem(title: "NO Image")
+        let item2 = DropdownItem(image: UIImage(named: "file")!, title: "File")
+        let item3 = DropdownItem(image: UIImage(named: "post")!, title: "Post", style: .highlight)
+        let item4 = DropdownItem(image: UIImage(named: "post")!, title: "Event", style: .highlight, accessoryImage: UIImage(named: "accessory")!)
+        
+        let data = [item1, item2, item3, item4]
+        items = [data]
+        let menuView = DropUpMenu(items: data, selectedRow: 0, bottomOffsetY: self.tabBarController?.tabBar.frame.height ?? 0)
+        menuView.delegate = self
+        menuView.showMenu()
+    }
+```
+
+#### Handle delegate
+
+```swift
+extension ViewController: DropUpMenuDelegate {
+    func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath) {
+        let alertConroller = UIAlertController(title: "Nice", message: "DropUpMenu didselect \(indexPath.row) text:\(items[indexPath.section][indexPath.row].title)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertConroller.addAction(okAction)
+        present(alertConroller, animated: true) {
+            print("Display success")
+        }
+    }
+    
+    func dropUpMenuCancel(_ dropUpMenu: DropUpMenu) {
+        print("select cancel")
+    }
+}
+```
+
 
 for detail, Please check the demo
 

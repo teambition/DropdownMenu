@@ -223,7 +223,7 @@
 				TargetAttributes = {
 					ACE6DB8E1CF741F6005C6667 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 7NLBE99QC4;
+						DevelopmentTeam = ZDUX4TJC7F;
 						LastSwiftMigration = 0800;
 					};
 					ACE6DBA21CF741F6005C6667 = {
@@ -442,11 +442,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7NLBE99QC4;
+				DEVELOPMENT_TEAM = ZDUX4TJC7F;
 				INFOPLIST_FILE = DropdownMenuDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenu2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -456,11 +456,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7NLBE99QC4;
+				DEVELOPMENT_TEAM = ZDUX4TJC7F;
 				INFOPLIST_FILE = DropdownMenuDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenuDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teambition.DropdownMenu2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
