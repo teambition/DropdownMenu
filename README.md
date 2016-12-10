@@ -39,7 +39,7 @@
 $ gem install cocoapods
 ```
 
-To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate DropdownMenu into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
@@ -47,7 +47,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'DropdownMenu'
+    pod 'TBDropdownMenu'
 end
 ```
 

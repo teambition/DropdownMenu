@@ -15,16 +15,16 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "DropdownMenu"
+  s.name         = "TBDropdownMenu"
   s.version      = "2.3.0"
-  s.summary      = "DropdownMenu is a dropdown menu for navigationController in Swift"
+  s.summary      = "TBDropdownMenu is a dropdown menu for navigationController in Swift"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  s.description  = "DropdownMenu is a dropdown menu for navigationController in Swift, It can be associated in any place if have a navigationController"
+  s.description  = "TBDropdownMenu is a dropdown menu for navigationController in Swift, It can be associated in any place if have a navigationController"
 
   s.homepage     = "https://github.com/teambition/DropdownMenu"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
