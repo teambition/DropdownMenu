@@ -94,6 +94,15 @@ For more information about how to use Carthage, please see its [project page](ht
 
 #### Import framework to your class
 
+Cocoapods:
+
+```swift
+import TBDropdownMenu
+
+```
+
+Carthage:
+
 ```swift
 import DropdownMenu
 
