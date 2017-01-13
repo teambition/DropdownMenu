@@ -218,6 +218,14 @@ extension DropUpMenu: UITableViewDataSource {
                 cell.imageView?.image = highlightImage
                 cell.imageView?.tintColor = highlightColor
             }
+        case .Section:
+            cell.textLabel?.textColor = textColor
+            cell.textLabel?.font = UIFont.systemFontOfSize(13)
+            cell.accessoryType = .None
+            cell.userInteractionEnabled = false
+            if let image = item.image {
+                cell.imageView?.image = image
+            }
         }
         
         cell.textLabel?.text = item.title
