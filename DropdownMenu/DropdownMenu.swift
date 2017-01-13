@@ -31,6 +31,13 @@ public class DropdownMenu: UIView {
     private var windowRootView: UIView?
     private var topConstraint: NSLayoutConstraint?
     private var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+    
+    private let portraitTopOffset: CGFloat = 64.0
+    private let landscapeTopOffset: CGFloat = 32.0
+    private var topLayoutConstraintConstant: CGFloat {
+        return navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y + topOffsetY
+    }
+
 
     public weak var delegate: DropdownMenuDelegate?
     public var animateDuration: NSTimeInterval = 0.25
@@ -39,6 +46,8 @@ public class DropdownMenu: UIView {
     public var rowHeight: CGFloat = 50
     public var tableViewHeight: CGFloat = 0
     public var defaultBottonMargin: CGFloat = 150
+    public var topOffsetY: CGFloat = 0
+
     public var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     public var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
@@ -70,16 +79,21 @@ public class DropdownMenu: UIView {
     
     func updateForOrientationChange(nofication: NSNotification) {
         if let oriention = nofication.userInfo?[UIApplicationStatusBarOrientationUserInfoKey] as? Int {
-            var topOffset: CGFloat = 64.0
+            var topOffset: CGFloat
+
             switch oriention {
             case UIInterfaceOrientation.LandscapeLeft.rawValue, UIInterfaceOrientation.LandscapeRight.rawValue:
-                topOffset = 44.0
+                topOffset = landscapeTopOffset
+
             default:
-                topOffset = 64.0
+                topOffset = portraitTopOffset
+
             }
+            topOffset = topOffset + topOffsetY
+
             topConstraint?.constant = topOffset
             navigationBarCoverViewHeightConstraint?.constant = topOffset
-            UIView.animateWithDuration(0.2, animations: { 
+            UIView.animateWithDuration(0.1, animations: {
                 self.windowRootView?.layoutIfNeeded()
             })
         }
@@ -111,8 +125,10 @@ public class DropdownMenu: UIView {
 
     private func setupTableView() {
         tableViewHeight = CGFloat(items.count) * rowHeight
-        let navigationBarFrame: CGRect = navigationController.navigationBar.frame
-        let maxHeight = navigationController.view.frame.height - navigationBarFrame.height + navigationBarFrame.origin.y - defaultBottonMargin
+//        let navigationBarFrame: CGRect = navigationController.navigationBar.frame
+//        let maxHeight = navigationController.view.frame.height - navigationBarFrame.height + navigationBarFrame.origin.y - defaultBottonMargin
+        let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
+
         if tableViewHeight > maxHeight {
             tableViewHeight = maxHeight
         }
@@ -136,9 +152,11 @@ public class DropdownMenu: UIView {
         onView.addSubview(barCoverView)
         barCoverView.translatesAutoresizingMaskIntoConstraints = false
 
-        let navigationBar = navigationController.navigationBar
+//        let navigationBar = navigationController.navigationBar
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Top, relatedBy: .Equal, toItem: onView, attribute: .Top, multiplier: 1.0, constant: 0)])
-        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: navigationBar.frame.height + navigationBar.frame.origin.y)
+//        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: navigationBar.frame.height + navigationBar.frame.origin.y)
+        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: topLayoutConstraintConstant)
+
         NSLayoutConstraint.activateConstraints([navigationBarCoverViewHeightConstraint!])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Left, relatedBy: .Equal, toItem: onView, attribute: .Left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: barCoverView, attribute: .Right, relatedBy: .Equal, toItem: onView, attribute: .Right, multiplier: 1.0, constant: 0)])
@@ -166,7 +184,9 @@ public class DropdownMenu: UIView {
         windowRootView?.addSubview(self)
         
         translatesAutoresizingMaskIntoConstraints = false
-        topConstraint = NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: windowRootView, attribute: .Top, multiplier: 1.0, constant: navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y)
+//        topConstraint = NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: windowRootView, attribute: .Top, multiplier: 1.0, constant: navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y)
+        topConstraint = NSLayoutConstraint.init(item: self, attribute: .Top, relatedBy: .Equal, toItem: windowRootView, attribute: .Top, multiplier: 1.0, constant: topLayoutConstraintConstant)
+
         NSLayoutConstraint.activateConstraints([topConstraint!])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: windowRootView, attribute: .Bottom, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activateConstraints([NSLayoutConstraint.init(item: self, attribute: .Left, relatedBy: .Equal, toItem: windowRootView, attribute: .Left, multiplier: 1.0, constant: 0)])
