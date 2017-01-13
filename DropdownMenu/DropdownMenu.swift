@@ -52,6 +52,7 @@ public class DropdownMenu: UIView {
     public var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     public var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
     public var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
+    public var lightRedColor: UIColor = UIColor(red: 255.0/255.0, green: 132.0/255.0, blue: 134.0/255.0, alpha: 1.0)
     public var displaySelected: Bool = true
 
     required public init?(coder aDecoder: NSCoder) {
@@ -249,10 +250,18 @@ extension DropdownMenu: UITableViewDataSource {
                 cell.imageView?.image = highlightImage
                 cell.imageView?.tintColor = highlightColor
             }
+        case .Section:
+            cell.textLabel?.textColor = textColor
+            cell.textLabel?.font = UIFont.systemFontOfSize(13)
+            cell.accessoryType = .None
+            cell.userInteractionEnabled = false
+            if let image = item.image {
+                cell.imageView?.image = image
+            }
         }
 
         cell.textLabel?.text = item.title
-        cell.tintColor = highlightColor
+        cell.tintColor = lightRedColor
         if displaySelected && indexPath.row == selectedRow {
             cell.accessoryType = .Checkmark
         } else {

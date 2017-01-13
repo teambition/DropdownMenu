@@ -11,6 +11,7 @@ import UIKit
 public enum DropdownItemStyle: Int {
     case Default
     case Highlight
+    case Section
 }
 
 public class DropdownItem {
