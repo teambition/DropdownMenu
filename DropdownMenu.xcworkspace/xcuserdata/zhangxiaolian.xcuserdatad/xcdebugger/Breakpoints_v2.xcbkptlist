@@ -36,61 +36,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DropdownMenu/DropUpMenu.swift"
-            timestampString = "492601774.239123"
+            timestampString = "513074148.541791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DropdownMenu/DropUpMenu.swift"
-            timestampString = "492599077.671665"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "hideMenu(isSelectAction:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DropdownMenu.DropUpMenu.hideMenu (isSelectAction : Swift.Bool) -&gt; ()"
-                  moduleName = "DropdownMenu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "499850799.731409"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "172"
-                  endingLineNumber = "172"
-                  offsetFromSymbolStart = "26">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DropdownMenu.DropUpMenu.(hideMenu (isSelectAction : Swift.Bool) -&gt; ()).(closure #1)"
-                  moduleName = "DropdownMenu"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhangxiaolian/Work/Suric-Open-Source/DropdownMenu/DropdownMenu/DropUpMenu.swift"
-                  timestampString = "499850799.73326"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "173"
-                  endingLineNumber = "173"
-                  offsetFromSymbolStart = "15">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

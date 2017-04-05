@@ -50,8 +50,17 @@ open class DropdownMenu: UIView {
     open var textFont: UIFont = UIFont.systemFont(ofSize: 15.0)
     open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-    open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
-    open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
+    open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0) {
+        didSet {
+            tableView.backgroundColor = tableViewBackgroundColor
+        }
+    }
+    open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0) {
+        didSet {
+            tableView.separatorColor = tableViewSeperatorColor
+        }
+    }
+    open var cellBackgroundColor = UIColor.white
     
     open var displaySelected: Bool = true
     open var displaySectionHeader: Bool = false
@@ -150,8 +159,6 @@ open class DropdownMenu: UIView {
         }
         
         tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView.separatorColor = tableViewSeperatorColor
-        tableView.backgroundColor = tableViewBackgroundColor
         tableView?.delegate = self
         tableView?.dataSource = self
         addSubview(tableView)
@@ -168,11 +175,11 @@ open class DropdownMenu: UIView {
         view.addSubview(barCoverView!)
         barCoverView?.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0)])
-        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: topLayoutConstraintConstant)
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView!, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0)])
+        navigationBarCoverViewHeightConstraint = NSLayoutConstraint.init(item: barCoverView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: topLayoutConstraintConstant)
         NSLayoutConstraint.activate([navigationBarCoverViewHeightConstraint!])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView!, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView!, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
         barCoverView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
     
@@ -259,6 +266,7 @@ extension DropdownMenu: UITableViewDataSource {
         if let customCell = delegate?.dropdownMenu(self, cellForRowAt: indexPath) {
             return customCell
         }
+        
         let item = sections[indexPath.section].items[indexPath.row]
         let cell = UITableViewCell(style: .default, reuseIdentifier: "dropdownMenuCell")
         
@@ -280,6 +288,8 @@ extension DropdownMenu: UITableViewDataSource {
         cell.textLabel?.text = item.title
         cell.textLabel?.font = textFont
         cell.tintColor = highlightColor
+        cell.backgroundColor = cellBackgroundColor
+        
         if displaySelected && indexPath == selectedIndexPath {
             cell.accessoryType = .checkmark
         } else {

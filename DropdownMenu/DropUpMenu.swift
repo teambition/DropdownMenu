@@ -49,16 +49,30 @@ open class DropUpMenu: UIView {
     }()
     
     open weak var delegate: DropUpMenuDelegate?
+    
     open var animateDuration: TimeInterval = 0.25
+    
     open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
     open var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
+    
     open var rowHeight: CGFloat = 50
     open var tableViewHeight: CGFloat = 0
     open var defaultBottonMargin: CGFloat = 150
+    
     open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
     open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-    open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0)
-    open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0)
+    open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0) {
+        didSet {
+            tableView.backgroundColor = tableViewBackgroundColor
+        }
+    }
+    open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0) {
+        didSet {
+            tableView.separatorColor = tableViewSeperatorColor
+        }
+    }
+    open var cellBackgroundColor = UIColor.white
+
     open var displaySelected: Bool = true
     open var bottomOffsetY: CGFloat = 0
     
@@ -111,8 +125,6 @@ open class DropUpMenu: UIView {
         }
         
         tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView.separatorColor = tableViewSeperatorColor
-        tableView.backgroundColor = tableViewBackgroundColor
         tableView?.delegate = self
         tableView?.dataSource = self
         addSubview(tableView)
@@ -198,6 +210,7 @@ extension DropUpMenu: UITableViewDataSource {
         if let customCell = delegate?.dropUpMenu(self, cellForRowAt: indexPath) {
             return customCell
         }
+        
         let item = items[(indexPath as NSIndexPath).row]
         let cell = UITableViewCell(style: .default, reuseIdentifier: "dropUpMenuCell")
         
@@ -218,6 +231,8 @@ extension DropUpMenu: UITableViewDataSource {
         
         cell.textLabel?.text = item.title
         cell.tintColor = highlightColor
+        cell.backgroundColor = cellBackgroundColor
+        
         if displaySelected && (indexPath as NSIndexPath).row == selectedRow {
             cell.accessoryType = .checkmark
         } else {
