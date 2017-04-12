@@ -12,12 +12,14 @@ public protocol DropdownMenuDelegate: class {
     func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell?
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath)
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu)
+    func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu)
 }
 
 public extension DropdownMenuDelegate {
     func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell? { return nil }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath) { }
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu) { }
+    func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu) { }
 }
 
 open class DropdownMenu: UIView {
@@ -234,6 +236,7 @@ open class DropdownMenu: UIView {
     }
     
     open func hideMenu(isSelectAction: Bool = false) {
+        delegate?.dropdownMenuWillDismiss(self)
         UIView.animate(withDuration: animateDuration, animations: {
             self.backgroundColor = self.backgroudBeginColor
             self.tableView.frame.origin.y = -self.tableViewHeight

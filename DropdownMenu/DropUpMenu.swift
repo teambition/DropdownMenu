@@ -20,6 +20,7 @@ public protocol DropUpMenuDelegate: class {
     func dropUpMenu(_ dropUpMenu: DropUpMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell?
     func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath)
     func dropUpMenuCancel(_ dropUpMenu: DropUpMenu)
+    func dropUpMenuWillDismiss(_ dropUpMenu: DropdownMenu)
 }
 
 public extension DropUpMenuDelegate {
@@ -31,6 +32,9 @@ public extension DropUpMenuDelegate {
     }
     
     func dropUpMenuCancel(_ dropUpMenu: DropUpMenu) {
+    }
+  
+    func dropUpMenuWillDismiss(_ dropUpMenu: DropUpMenu) {
     }
 }
 
@@ -181,6 +185,7 @@ open class DropUpMenu: UIView {
     }
     
     open func hideMenu(isSelectAction: Bool = false) {
+        delegate?.dropUpMenuWillDismiss(self)
         UIView.animate(withDuration: animateDuration, animations: {
             self.backgroundColor = self.backgroudBeginColor
             self.tableView.frame.origin.y = screenRect.height - self.bottomOffsetY
