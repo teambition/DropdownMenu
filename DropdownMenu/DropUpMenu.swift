@@ -20,7 +20,7 @@ public protocol DropUpMenuDelegate: class {
     func dropUpMenu(_ dropUpMenu: DropUpMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell?
     func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath)
     func dropUpMenuCancel(_ dropUpMenu: DropUpMenu)
-    func dropUpMenuWillDismiss(_ dropUpMenu: DropdownMenu)
+    func dropUpMenuWillDismiss(_ dropUpMenu: DropUpMenu)
 }
 
 public extension DropUpMenuDelegate {
@@ -28,14 +28,11 @@ public extension DropUpMenuDelegate {
         return nil
     }
     
-    func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath) {
-    }
+    func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath) { }
     
-    func dropUpMenuCancel(_ dropUpMenu: DropUpMenu) {
-    }
+    func dropUpMenuCancel(_ dropUpMenu: DropUpMenu) { }
   
-    func dropUpMenuWillDismiss(_ dropUpMenu: DropUpMenu) {
-    }
+    func dropUpMenuWillDismiss(_ dropUpMenu: DropUpMenu) { }
 }
 
 private let screenRect = UIScreen.main.bounds
