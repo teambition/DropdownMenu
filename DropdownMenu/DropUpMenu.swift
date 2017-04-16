@@ -21,6 +21,7 @@ public protocol DropUpMenuDelegate: class {
     func dropUpMenu(_ dropUpMenu: DropUpMenu, didSelectRowAt indexPath: IndexPath)
     func dropUpMenuCancel(_ dropUpMenu: DropUpMenu)
     func dropUpMenuWillDismiss(_ dropUpMenu: DropUpMenu)
+    func dropUpMenuWillShow(_ dropUpMenu: DropUpMenu)
 }
 
 public extension DropUpMenuDelegate {
@@ -33,6 +34,8 @@ public extension DropUpMenuDelegate {
     func dropUpMenuCancel(_ dropUpMenu: DropUpMenu) { }
   
     func dropUpMenuWillDismiss(_ dropUpMenu: DropUpMenu) { }
+  
+    func dropUpMenuWillShow(_ dropUpMenu: DropUpMenu) { }
 }
 
 private let screenRect = UIScreen.main.bounds
@@ -149,6 +152,7 @@ open class DropUpMenu: UIView {
     }
     
     open func showMenu() {
+        delegate?.dropUpMenuWillShow(self)
         if isShow {
             hideMenu()
             return

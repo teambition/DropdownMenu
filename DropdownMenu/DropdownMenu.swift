@@ -13,6 +13,7 @@ public protocol DropdownMenuDelegate: class {
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath)
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu)
     func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu)
+    func dropdownMenuWillShow(_ dropdownMenu: DropdownMenu)
 }
 
 public extension DropdownMenuDelegate {
@@ -20,6 +21,7 @@ public extension DropdownMenuDelegate {
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath) { }
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu) { }
     func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu) { }
+    func dropdownMenuWillShow(_ dropdownMenu: DropdownMenu) { }
 }
 
 open class DropdownMenu: UIView {
@@ -36,7 +38,11 @@ open class DropdownMenu: UIView {
     fileprivate let portraitTopOffset: CGFloat = 64.0
     fileprivate let landscapeTopOffset: CGFloat = 32.0
     fileprivate var topLayoutConstraintConstant: CGFloat {
-        return navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y + topOffsetY
+        var offset: CGFloat = 0
+        if !navigationController.isNavigationBarHidden {
+          offset = navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y
+        }
+        return offset + topOffsetY
     }
     
     open weak var delegate: DropdownMenuDelegate?
@@ -197,6 +203,7 @@ open class DropdownMenu: UIView {
     }
     
     open func showMenu(isOnNavigaitionView: Bool = false) {
+        delegate?.dropdownMenuWillShow(self)
         if isShow {
             hideMenu()
             return
