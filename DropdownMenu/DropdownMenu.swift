@@ -122,7 +122,11 @@ open class DropdownMenu: UIView {
             var topOffset: CGFloat
             switch oriention {
             case UIInterfaceOrientation.landscapeLeft.rawValue, UIInterfaceOrientation.landscapeRight.rawValue:
-                topOffset = landscapeTopOffset
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    topOffset = landscapeTopOffset
+                } else {
+                    topOffset = navigationController.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height
+                }
             default:
                 topOffset = portraitTopOffset
             }
