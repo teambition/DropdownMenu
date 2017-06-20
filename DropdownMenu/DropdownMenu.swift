@@ -26,9 +26,9 @@ public extension DropdownMenuDelegate {
 
 open class DropdownMenu: UIView {
     fileprivate weak var navigationController: UINavigationController!
-    fileprivate var sections: [DropdownSection] = []
     fileprivate var selectedIndexPath: IndexPath
     open var tableView: UITableView!
+    open var sections: [DropdownSection] = []
     fileprivate var barCoverView: UIView?
     fileprivate var isShow = false
     fileprivate var addedWindow: UIWindow?
