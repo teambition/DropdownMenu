@@ -46,6 +46,8 @@ open class DropdownMenu: UIView {
     }
     
     fileprivate var tableviewHeightConstraint: NSLayoutConstraint!
+    fileprivate var topSeparator = UIView()
+
     open weak var delegate: DropdownMenuDelegate?
     open var animateDuration: TimeInterval = 0.25
     open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
@@ -72,6 +74,11 @@ open class DropdownMenu: UIView {
     open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0) {
         didSet {
             tableView.separatorColor = tableViewSeperatorColor
+        }
+    }
+    open var topSeperatorColor = UIColor.white {
+        didSet {
+            topSeparator.backgroundColor = topSeperatorColor
         }
     }
     open var cellBackgroundColor = UIColor.white
@@ -155,8 +162,8 @@ open class DropdownMenu: UIView {
     }
     
     fileprivate func setupTopSeperatorView() {
-        let seperatorView = UIView()
-        seperatorView.backgroundColor = tableViewSeperatorColor
+        let seperatorView = topSeparator
+        seperatorView.backgroundColor = topSeperatorColor
         addSubview(seperatorView)
         seperatorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)])
