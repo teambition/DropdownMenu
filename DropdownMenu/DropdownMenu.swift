@@ -45,11 +45,17 @@ open class DropdownMenu: UIView {
         return offset + topOffsetY
     }
     
+    fileprivate var tableviewHeightConstraint: NSLayoutConstraint!
     open weak var delegate: DropdownMenuDelegate?
     open var animateDuration: TimeInterval = 0.25
     open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
     open var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
-    open var rowHeight: CGFloat = 50
+    open var rowHeight: CGFloat = 50 {
+        didSet {
+            tableViewHeight = tableviewHeight()
+            tableviewHeightConstraint.constant = tableViewHeight
+        }
+    }
     open var sectionHeaderHeight: CGFloat = 44
     open var tableViewHeight: CGFloat = 0
     open var defaultBottonMargin: CGFloat = 150
@@ -172,9 +178,10 @@ open class DropdownMenu: UIView {
         addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+        tableviewHeightConstraint = NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)
+        NSLayoutConstraint.activate([tableviewHeightConstraint])
     }
     
     fileprivate func setupNavigationBarCoverView(on view: UIView) {
