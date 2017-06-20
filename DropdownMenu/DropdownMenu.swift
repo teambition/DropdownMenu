@@ -250,7 +250,7 @@ open class DropdownMenu: UIView {
         
         backgroundColor = backgroudBeginColor
         self.tableView.frame.origin.y = -self.tableViewHeight
-        UIView.animate(withDuration: animateDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7<<16), animations: {
+        UIView.animate(withDuration: animateDuration, delay: 0, options: .curveEaseOut, animations: {
             self.backgroundColor = self.backgroudEndColor
             self.tableView.frame.origin.y = 0
         }, completion: nil)
