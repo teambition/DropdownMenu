@@ -1,6 +1,7 @@
 <img src="https://dn-st.teambition.net/teambition/images/logo.2328738d.svg" width = "300" height = "200" alt="teambition" align=center />
 
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/TBDropdownMenu.svg)](https://img.shields.io/cocoapods/v/TBDropdownMenu.svg)
 
  DropdownMenu is a dropdown menu for navigationController in Swift, It  can be associated in any place if have a navigationController
  
