@@ -1,4 +1,4 @@
-![Teambition](https://dn-st.teambition.net/teambition/images/logo.2328738d.svg)
+<img src="https://dn-st.teambition.net/teambition/images/logo.2328738d.svg" width = "300" height = "200" alt="teambition" align=center />
 
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
