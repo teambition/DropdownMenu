@@ -6,14 +6,6 @@
 //  Copyright © 2016年 teambition. All rights reserved.
 //
 
-//
-//  DropUpMenu.swift
-//  DropUpMenu
-//
-//  Created by Suric on 16/5/26.
-//  Copyright © 2016年 teambition. All rights reserved.
-//
-
 import UIKit
 
 public protocol DropUpMenuDelegate: class {
@@ -94,7 +86,6 @@ open class DropUpMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
-        setupTableView()
     }
     
     fileprivate func setupGestureView() {
@@ -110,12 +101,12 @@ open class DropUpMenu: UIView {
         gestureView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    fileprivate func setupTopSeperatorView() {
+    fileprivate func setupBottomSeperatorView() {
         let seperatorView = UIView()
         seperatorView.backgroundColor = tableViewSeperatorColor
         addSubview(seperatorView)
         seperatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.5)])
@@ -158,6 +149,9 @@ open class DropUpMenu: UIView {
             return
         }
         isShow = true
+        
+        setupTableView()
+        setupBottomSeperatorView()
         
         if let rootView = UIApplication.shared.keyWindow {
             windowRootView = rootView

@@ -90,8 +90,6 @@ open class DropdownMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
-        setupTableView()
-        setupTopSeperatorView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
     }
@@ -106,8 +104,6 @@ open class DropdownMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
-        setupTableView()
-        setupTopSeperatorView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
     }
@@ -214,6 +210,9 @@ open class DropdownMenu: UIView {
         }
         
         isShow = true
+        
+        setupTableView()
+        setupTopSeperatorView()
         
         if let rootView = UIApplication.shared.keyWindow {
             windowRootView = rootView

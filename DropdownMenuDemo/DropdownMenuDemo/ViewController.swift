@@ -52,6 +52,7 @@ class ViewController: UIViewController {
         }
         menuView?.topOffsetY = CGFloat(offSetSlider.value)
         menuView?.delegate = self
+        menuView?.rowHeight = 70
         menuView?.showMenu()
     }
     
@@ -65,6 +66,7 @@ class ViewController: UIViewController {
         items = [data]
         let menuView = DropUpMenu(items: data, selectedRow: 0, bottomOffsetY: self.tabBarController?.tabBar.frame.height ?? 0)
         menuView.delegate = self
+        menuView.rowHeight = 70
         menuView.showMenu()
     }
 
