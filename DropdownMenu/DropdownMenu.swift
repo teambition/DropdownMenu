@@ -26,15 +26,15 @@ public extension DropdownMenuDelegate {
 
 open class DropdownMenu: UIView {
     fileprivate weak var navigationController: UINavigationController!
-    fileprivate var sections: [DropdownSection] = []
     fileprivate var selectedIndexPath: IndexPath
-    open var tableView: UITableView!
     fileprivate var barCoverView: UIView?
+    fileprivate var topSeparator = UIView()
     fileprivate var isShow = false
     fileprivate var addedWindow: UIWindow?
     fileprivate var windowRootView: UIView?
     fileprivate var topConstraint: NSLayoutConstraint?
     fileprivate var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+    fileprivate var tableviewHeightConstraint: NSLayoutConstraint?
     fileprivate let portraitTopOffset: CGFloat = 64.0
     fileprivate let landscapeTopOffset: CGFloat = 32.0
     fileprivate var topLayoutConstraintConstant: CGFloat {
@@ -44,20 +44,37 @@ open class DropdownMenu: UIView {
         }
         return offset + topOffsetY
     }
-    
+
     open weak var delegate: DropdownMenuDelegate?
     open var animateDuration: TimeInterval = 0.25
     open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
     open var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
-    open var rowHeight: CGFloat = 50
-    open var sectionHeaderHeight: CGFloat = 44
-    open var tableViewHeight: CGFloat = 0
+
     open var defaultBottonMargin: CGFloat = 150
     open var topOffsetY: CGFloat = 0
-    
+
+    open var displaySelected: Bool = true
+    open var displaySectionHeader: Bool = false
+    open var displayNavigationBarCoverView: Bool = true
+
+    // section header sytle
+    open var sectionHeaderStyle: SectionHeaderStyle = SectionHeaderStyle()
+
+    //table view options
+    open var tableView: UITableView!
+    open var sections: [DropdownSection] = []
+    open var sectionHeaderHeight: CGFloat = 44
+    open var tableViewHeight: CGFloat = 0
+    open var cellBackgroundColor = UIColor.white
+    open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     open var textFont: UIFont = UIFont.systemFont(ofSize: 15.0)
     open var textColor: UIColor = UIColor(red: 56.0/255.0, green: 56.0/255.0, blue: 56.0/255.0, alpha: 1.0)
-    open var highlightColor: UIColor = UIColor(red: 3.0/255.0, green: 169.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+    open var rowHeight: CGFloat = 50 {
+        didSet {
+            tableViewHeight = tableviewHeight()
+            tableviewHeightConstraint?.constant = tableViewHeight
+        }
+    }
     open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0) {
         didSet {
             tableView.backgroundColor = tableViewBackgroundColor
@@ -68,14 +85,11 @@ open class DropdownMenu: UIView {
             tableView.separatorColor = tableViewSeperatorColor
         }
     }
-    open var cellBackgroundColor = UIColor.white
-    
-    open var displaySelected: Bool = true
-    open var displaySectionHeader: Bool = false
-    open var displayNavigationBarCoverView: Bool = true
-    
-    // section header sytle
-    open var sectionHeaderStyle: SectionHeaderStyle = SectionHeaderStyle()
+    open var topSeperatorColor = UIColor.white {
+        didSet {
+            topSeparator.backgroundColor = topSeperatorColor
+        }
+    }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -149,8 +163,8 @@ open class DropdownMenu: UIView {
     }
     
     fileprivate func setupTopSeperatorView() {
-        let seperatorView = UIView()
-        seperatorView.backgroundColor = tableViewSeperatorColor
+        let seperatorView = topSeparator
+        seperatorView.backgroundColor = topSeperatorColor
         addSubview(seperatorView)
         seperatorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0)])
@@ -172,9 +186,10 @@ open class DropdownMenu: UIView {
         addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+        tableviewHeightConstraint = NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)
+        NSLayoutConstraint.activate([tableviewHeightConstraint!])
     }
     
     fileprivate func setupNavigationBarCoverView(on view: UIView) {
@@ -239,7 +254,7 @@ open class DropdownMenu: UIView {
         
         backgroundColor = backgroudBeginColor
         self.tableView.frame.origin.y = -self.tableViewHeight
-        UIView.animate(withDuration: animateDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7<<16), animations: {
+        UIView.animate(withDuration: animateDuration, delay: 0, options: .curveEaseOut, animations: {
             self.backgroundColor = self.backgroudEndColor
             self.tableView.frame.origin.y = 0
         }, completion: nil)
