@@ -9,16 +9,20 @@
 import UIKit
 
 public protocol DropdownMenuDelegate: class {
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell?
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath)
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, shouldUpdateSelectionAt indexPath: IndexPath) -> Bool
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu)
     func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu)
     func dropdownMenuWillShow(_ dropdownMenu: DropdownMenu)
 }
 
 public extension DropdownMenuDelegate {
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) { }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell? { return nil }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath) { }
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, shouldUpdateSelectionAt indexPath: IndexPath) -> Bool { return true }
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu) { }
     func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu) { }
     func dropdownMenuWillShow(_ dropdownMenu: DropdownMenu) { }
@@ -61,6 +65,13 @@ open class DropdownMenu: UIView {
     open var tableViewBackgroundColor: UIColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1.0) {
         didSet {
             tableView.backgroundColor = tableViewBackgroundColor
+        }
+    }
+    open var separatorStyle: UITableViewCellSeparatorStyle = .singleLine {
+        didSet {
+            if let tableView = tableView {
+                tableView.separatorStyle = separatorStyle
+            }
         }
     }
     open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0) {
@@ -167,6 +178,7 @@ open class DropdownMenu: UIView {
         }
         
         tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        tableView.separatorStyle = separatorStyle
         tableView?.delegate = self
         tableView?.dataSource = self
         addSubview(tableView)
@@ -275,6 +287,10 @@ extension DropdownMenu: UITableViewDataSource {
         return sections[section].items.count
     }
     
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        delegate?.dropdownMenu(self, willDisplay: cell, forRowAt: indexPath)
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let customCell = delegate?.dropdownMenu(self, cellForRowAt: indexPath) {
             return customCell
@@ -335,7 +351,8 @@ extension DropdownMenu: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if displaySelected {
+        let shouldUpdateSelection = delegate?.dropdownMenu(self, shouldUpdateSelectionAt: indexPath) ?? true
+        if displaySelected && shouldUpdateSelection {
             let item = sections[indexPath.section].items[indexPath.row]
             if item.accessoryImage  == nil {
                 let previousSelectedcell = tableView.cellForRow(at: selectedIndexPath)
