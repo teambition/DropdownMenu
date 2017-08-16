@@ -51,8 +51,9 @@ class ViewController: UIViewController {
             menuView = DropdownMenu(navigationController: navigationController!, items: [item1, item2, item3, item4], selectedRow: selectedRow)
         }
         menuView?.topOffsetY = CGFloat(offSetSlider.value)
+        menuView?.separatorStyle = .none
         menuView?.delegate = self
-        menuView?.rowHeight = 70
+        menuView?.rowHeight = 50
         menuView?.showMenu()
     }
     

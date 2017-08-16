@@ -86,6 +86,7 @@ open class DropUpMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
+        initTableView()
     }
     
     fileprivate func setupGestureView() {
@@ -101,6 +102,27 @@ open class DropUpMenu: UIView {
         gestureView.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    fileprivate func initTableView() {
+        tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        tableView?.delegate = self
+        tableView?.dataSource = self
+        addSubview(tableView)
+    }
+    
+    fileprivate func layoutTableView() {
+        tableViewHeight = CGFloat(items.count) * rowHeight
+        let maxHeight = UIScreen.main.bounds.height - bottomOffsetY
+        if tableViewHeight > maxHeight {
+            tableViewHeight = maxHeight
+        }
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant:0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+    }
+    
     fileprivate func setupBottomSeperatorView() {
         let seperatorView = UIView()
         seperatorView.backgroundColor = tableViewSeperatorColor
@@ -110,24 +132,6 @@ open class DropUpMenu: UIView {
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.5)])
-    }
-    
-    fileprivate func setupTableView() {
-        tableViewHeight = CGFloat(items.count) * rowHeight
-        let maxHeight = UIScreen.main.bounds.height - bottomOffsetY
-        if tableViewHeight > maxHeight {
-            tableViewHeight = maxHeight
-        }
-        
-        tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView?.delegate = self
-        tableView?.dataSource = self
-        addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant:0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
     }
     
     fileprivate func setupBottomCoverView(on view: UIView) {
@@ -150,7 +154,7 @@ open class DropUpMenu: UIView {
         }
         isShow = true
         
-        setupTableView()
+        layoutTableView()
         setupBottomSeperatorView()
         
         if let rootView = UIApplication.shared.keyWindow {

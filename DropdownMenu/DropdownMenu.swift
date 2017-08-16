@@ -101,6 +101,7 @@ open class DropdownMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
+        initTableView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
     }
@@ -115,6 +116,7 @@ open class DropdownMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
+        initTableView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: NSNotification.Name.UIApplicationWillChangeStatusBarOrientation, object: nil)
     }
@@ -159,6 +161,29 @@ open class DropdownMenu: UIView {
         gestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
     
+    fileprivate func initTableView() {
+        tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        tableView.separatorStyle = separatorStyle
+        tableView?.delegate = self
+        tableView?.dataSource = self
+        addSubview(tableView)
+    }
+    
+    fileprivate func layoutTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableViewHeight = tableviewHeight()
+        let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
+        if tableViewHeight > maxHeight {
+            tableViewHeight = maxHeight
+        }
+        
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+    }
+    
     fileprivate func setupTopSeperatorView() {
         let seperatorView = UIView()
         seperatorView.backgroundColor = tableViewSeperatorColor
@@ -168,25 +193,6 @@ open class DropdownMenu: UIView {
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.5)])
-    }
-    
-    fileprivate func setupTableView() {
-        tableViewHeight = tableviewHeight()
-        let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
-        if tableViewHeight > maxHeight {
-            tableViewHeight = maxHeight
-        }
-        
-        tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView.separatorStyle = separatorStyle
-        tableView?.delegate = self
-        tableView?.dataSource = self
-        addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
     }
     
     fileprivate func setupNavigationBarCoverView(on view: UIView) {
@@ -223,7 +229,7 @@ open class DropdownMenu: UIView {
         
         isShow = true
         
-        setupTableView()
+        layoutTableView()
         setupTopSeperatorView()
         
         if let rootView = UIApplication.shared.keyWindow {
