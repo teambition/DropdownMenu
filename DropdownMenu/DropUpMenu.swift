@@ -106,6 +106,7 @@ open class DropUpMenu: UIView {
         tableView = UITableView(frame: CGRect.zero, style: .grouped)
         tableView?.delegate = self
         tableView?.dataSource = self
+        tableView.estimatedSectionHeaderHeight = 0
         addSubview(tableView)
     }
     
@@ -183,7 +184,7 @@ open class DropUpMenu: UIView {
             }, completion: nil)
     }
     
-    open func hideMenu(isSelectAction: Bool = false) {
+    @objc open func hideMenu(isSelectAction: Bool = false) {
         delegate?.dropUpMenuWillDismiss(self)
         UIView.animate(withDuration: animateDuration, animations: {
             self.backgroundColor = self.backgroudBeginColor
@@ -257,7 +258,7 @@ extension DropUpMenu: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return CGFloat.leastNonzeroMagnitude
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

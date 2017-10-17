@@ -125,7 +125,7 @@ open class DropdownMenu: UIView {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func updateForOrientationChange(_ nofication: Notification) {
+    @objc func updateForOrientationChange(_ nofication: Notification) {
         print("UIApplicationWillChangeStatusBarOrientation")
         if let oriention = (nofication as NSNotification).userInfo?[UIApplicationStatusBarOrientationUserInfoKey] as? Int {
             var topOffset: CGFloat
@@ -263,7 +263,7 @@ open class DropdownMenu: UIView {
         }, completion: nil)
     }
     
-    open func hideMenu(isSelectAction: Bool = false) {
+    @objc open func hideMenu(isSelectAction: Bool = false) {
         delegate?.dropdownMenuWillDismiss(self)
         UIView.animate(withDuration: animateDuration, animations: {
             self.backgroundColor = self.backgroudBeginColor
