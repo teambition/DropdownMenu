@@ -39,6 +39,7 @@ open class DropdownMenu: UIView {
     fileprivate var windowRootView: UIView?
     fileprivate var topConstraint: NSLayoutConstraint?
     fileprivate var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+    fileprivate let iPhoneXPortraitTopOffset: CGFloat = 88.0
     fileprivate let portraitTopOffset: CGFloat = 64.0
     fileprivate let landscapeTopOffset: CGFloat = 32.0
     fileprivate var topLayoutConstraintConstant: CGFloat {
@@ -137,7 +138,11 @@ open class DropdownMenu: UIView {
                     topOffset = navigationController.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height
                 }
             default:
-                topOffset = portraitTopOffset
+                if UIScreen.main.bounds.width == 812 {
+                    topOffset = iPhoneXPortraitTopOffset
+                } else {
+                    topOffset = portraitTopOffset
+                }
             }
             topOffset = topOffset + topOffsetY
             topConstraint?.constant = topOffset
