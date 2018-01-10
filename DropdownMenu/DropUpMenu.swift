@@ -107,6 +107,7 @@ open class DropUpMenu: UIView {
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView.estimatedSectionHeaderHeight = 0
+        tableView.estimatedSectionFooterHeight = 0
         addSubview(tableView)
     }
     

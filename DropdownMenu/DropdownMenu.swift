@@ -171,6 +171,8 @@ open class DropdownMenu: UIView {
         tableView.separatorStyle = separatorStyle
         tableView?.delegate = self
         tableView?.dataSource = self
+        tableView.estimatedSectionFooterHeight = 0
+        tableView.estimatedSectionHeaderHeight = 0
         addSubview(tableView)
     }
     
