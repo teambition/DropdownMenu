@@ -30,8 +30,10 @@ public extension DropdownMenuDelegate {
 
 open class DropdownMenu: UIView {
     fileprivate weak var navigationController: UINavigationController!
+   
     fileprivate var sections: [DropdownSection] = []
     fileprivate var selectedIndexPath: IndexPath
+    
     open var tableView: UITableView!
     fileprivate var barCoverView: UIView?
     fileprivate var isShow = false
@@ -80,6 +82,8 @@ open class DropdownMenu: UIView {
             tableView.separatorColor = tableViewSeperatorColor
         }
     }
+    open var zeroInsetSeperatorIndexPaths: [IndexPath] = []
+    
     open var cellBackgroundColor = UIColor.white
     
     open var displaySelected: Bool = true
@@ -340,6 +344,12 @@ extension DropdownMenu: UITableViewDataSource {
         
         if let accesoryImage = item.accessoryImage {
             cell.accessoryView = UIImageView(image: accesoryImage)
+        }
+        
+        if zeroInsetSeperatorIndexPaths.contains(indexPath) {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.layoutMargins.left, bottom: 0, right: 0)
         }
         
         return cell
