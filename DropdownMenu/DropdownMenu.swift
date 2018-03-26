@@ -395,4 +395,8 @@ extension DropdownMenu: UITableViewDelegate {
         sectionHeader.titleLabel.text = sections[section].sectionIdentifier
         return sectionHeader
     }
+    
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
 }
