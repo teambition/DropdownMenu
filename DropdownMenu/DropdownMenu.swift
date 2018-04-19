@@ -36,7 +36,7 @@ open class DropdownMenu: UIView {
     
     open var tableView: UITableView!
     fileprivate var barCoverView: UIView?
-    fileprivate var isShow = false
+    open var isShow = false
     fileprivate var addedWindow: UIWindow?
     fileprivate var windowRootView: UIView?
     fileprivate var topConstraint: NSLayoutConstraint?
@@ -72,9 +72,7 @@ open class DropdownMenu: UIView {
     }
     open var separatorStyle: UITableViewCellSeparatorStyle = .singleLine {
         didSet {
-            if let tableView = tableView {
-                tableView.separatorStyle = separatorStyle
-            }
+            tableView.separatorStyle = separatorStyle
         }
     }
     open var tableViewSeperatorColor = UIColor(red: 217.0/255.0, green: 217.0/255.0, blue: 217.0/255.0, alpha: 1.0) {
@@ -173,8 +171,8 @@ open class DropdownMenu: UIView {
     fileprivate func initTableView() {
         tableView = UITableView(frame: CGRect.zero, style: .grouped)
         tableView.separatorStyle = separatorStyle
-        tableView?.delegate = self
-        tableView?.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.estimatedSectionFooterHeight = 0
         tableView.estimatedSectionHeaderHeight = 0
         addSubview(tableView)
@@ -184,9 +182,15 @@ open class DropdownMenu: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         tableViewHeight = tableviewHeight()
+        
         let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
+        
         if tableViewHeight > maxHeight {
-            tableViewHeight = maxHeight
+            if displaySectionHeader {
+                tableViewHeight = maxHeight
+            } else {
+                tableViewHeight = round(maxHeight / rowHeight) * rowHeight
+            }
         }
         
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
