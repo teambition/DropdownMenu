@@ -183,12 +183,14 @@ open class DropdownMenu: UIView {
 
         tableViewHeight = tableviewHeight()
         
-        var maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
-        
-        maxHeight = ceil(maxHeight / rowHeight) * rowHeight
+        let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
         
         if tableViewHeight > maxHeight {
-            tableViewHeight = maxHeight
+            if displaySectionHeader {
+                tableViewHeight = maxHeight
+            } else {
+                tableViewHeight = round(maxHeight / rowHeight) * rowHeight
+            }
         }
         
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
