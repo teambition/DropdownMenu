@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "TBDropdownMenu"
-  s.version      = "3.1.1"
+  s.version      = "3.2.0"
   s.summary      = "TBDropdownMenu is a dropdown menu for navigationController in Swift"
 
   # This description is used to generate tags and improve search results.
@@ -62,10 +62,10 @@ Pod::Spec.new do |s|
   #
 
   # s.platform     = :ios
-  # s.platform     = :ios, "5.0"
+  # s.platform     = :ios, "9.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
