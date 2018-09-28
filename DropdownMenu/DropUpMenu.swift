@@ -179,7 +179,7 @@ open class DropUpMenu: UIView {
         
         backgroundColor = backgroudBeginColor
         self.tableView.frame.origin.y = screenRect.height - bottomOffsetY
-        UIView.animate(withDuration: animateDuration, delay: 0, options: UIViewAnimationOptions(rawValue: 7<<16), animations: {
+        UIView.animate(withDuration: animateDuration, delay: 0, options: UIView.AnimationOptions(rawValue: 7<<16), animations: {
             self.backgroundColor = self.backgroudEndColor
             self.tableView.frame.origin.y = screenRect.height - self.bottomOffsetY - self.tableViewHeight
             }, completion: nil)
