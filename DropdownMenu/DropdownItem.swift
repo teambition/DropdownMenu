@@ -30,9 +30,11 @@ open class DropdownItem {
 public struct DropdownSection {
     public var sectionIdentifier: String
     public var items: [DropdownItem]
+    public var customSectionHeader: UIView?
 
-    public init (sectionIdentifier: String, items: [DropdownItem]) {
+    public init (sectionIdentifier: String, items: [DropdownItem], customSectionHeader: UIView? = nil) {
         self.items = items
         self.sectionIdentifier = sectionIdentifier
+        self.customSectionHeader = customSectionHeader
     }
 }

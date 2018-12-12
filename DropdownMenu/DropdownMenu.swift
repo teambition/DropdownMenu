@@ -9,9 +9,11 @@
 import UIKit
 
 public protocol DropdownMenuDelegate: class {
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, heightForHeaderInSection section: Int) -> CGFloat
     func dropdownMenu(_ dropdownMenu: DropdownMenu, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell?
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath)
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, shouldDismissWhenSelectRowAt indexPath: IndexPath) -> Bool
     func dropdownMenu(_ dropdownMenu: DropdownMenu, shouldUpdateSelectionAt indexPath: IndexPath) -> Bool
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu)
     func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu)
@@ -19,9 +21,11 @@ public protocol DropdownMenuDelegate: class {
 }
 
 public extension DropdownMenuDelegate {
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, heightForHeaderInSection section: Int) -> CGFloat { return 44 }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) { }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, cellForRowAt indexPath: IndexPath) -> UITableViewCell? { return nil }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, didSelectRowAt indexPath: IndexPath) { }
+    func dropdownMenu(_ dropdownMenu: DropdownMenu, shouldDismissWhenSelectRowAt indexPath: IndexPath) -> Bool { return true }
     func dropdownMenu(_ dropdownMenu: DropdownMenu, shouldUpdateSelectionAt indexPath: IndexPath) -> Bool { return true }
     func dropdownMenuCancel(_ dropdownMenu: DropdownMenu) { }
     func dropdownMenuWillDismiss(_ dropdownMenu: DropdownMenu) { }
@@ -41,6 +45,7 @@ open class DropdownMenu: UIView {
     fileprivate var windowRootView: UIView?
     fileprivate var topConstraint: NSLayoutConstraint?
     fileprivate var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+    fileprivate var tableViewHeightConstraint: NSLayoutConstraint?
     fileprivate let iPhoneXPortraitTopOffset: CGFloat = 88.0
     fileprivate let portraitTopOffset: CGFloat = 64.0
     fileprivate let landscapeTopOffset: CGFloat = 32.0
@@ -57,7 +62,6 @@ open class DropdownMenu: UIView {
     open var backgroudBeginColor: UIColor = UIColor.black.withAlphaComponent(0)
     open var backgroudEndColor = UIColor(white: 0, alpha: 0.4)
     open var rowHeight: CGFloat = 50
-    open var sectionHeaderHeight: CGFloat = 44
     open var tableViewHeight: CGFloat = 0
     open var defaultBottonMargin: CGFloat = 150
     open var topOffsetY: CGFloat = 0
@@ -123,6 +127,33 @@ open class DropdownMenu: UIView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: UIApplication.willChangeStatusBarOrientationNotification, object: nil)
     }
+
+    public func updateItems(_ items: [DropdownItem]) {
+        self.sections = [DropdownSection(sectionIdentifier: "", items: items)]
+        self.tableView.beginUpdates()
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+        self.tableView.endUpdates()
+        updateForSectionsChange()
+    }
+
+    public func updateSections(_ sections: [DropdownSection]) {
+        self.sections = sections
+        self.tableView.reloadData()
+        updateForSectionsChange()
+    }
+
+    public func updateItems(_ items: [DropdownItem], inSection section: Int) {
+        guard 0..<self.sections.count ~= section else {
+            return
+        }
+        var dropdownSection = self.sections[section]
+        dropdownSection.items = items
+        self.sections[section] = dropdownSection
+        self.tableView.beginUpdates()
+        self.tableView.reloadSections(IndexSet(integer: section), with: .fade)
+        self.tableView.endUpdates()
+        updateForSectionsChange()
+    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -181,6 +212,17 @@ open class DropdownMenu: UIView {
     fileprivate func layoutTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
+        updateTableViewHeight()
+        
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
+        let tableViewHeightConstraint = NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)
+        NSLayoutConstraint.activate([tableViewHeightConstraint])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
+        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+        self.tableViewHeightConstraint = tableViewHeightConstraint
+    }
+
+    fileprivate func updateTableViewHeight() {
         tableViewHeight = tableviewHeight()
         
         let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
@@ -192,11 +234,18 @@ open class DropdownMenu: UIView {
                 tableViewHeight = round(maxHeight / rowHeight) * rowHeight
             }
         }
-        
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant:0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tableViewHeight)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0)])
-        NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
+    }
+
+    fileprivate func updateForSectionsChange(_ animations: (() -> Void)? = nil) {
+        updateTableViewHeight()
+        tableViewHeightConstraint?.constant = tableViewHeight
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            animations?()
+            strongSelf.layoutIfNeeded()
+        }
     }
     
     fileprivate func setupTopSeperatorView() {
@@ -226,11 +275,12 @@ open class DropdownMenu: UIView {
     
     fileprivate func tableviewHeight() -> CGFloat {
         var height: CGFloat = 0
-        if displaySectionHeader {
-            height += sectionHeaderHeight * CGFloat(sections.count)
-        }
-        for section in sections {
-            height += CGFloat(section.items.count) * rowHeight
+        sections.enumerated().forEach {
+            if displaySectionHeader {
+                let sectionHeaderHeight = delegate?.dropdownMenu(self, heightForHeaderInSection: $0) ?? 44
+                height += sectionHeaderHeight
+            }
+            height += CGFloat($1.items.count) * rowHeight
         }
         return height
     }
@@ -370,7 +420,10 @@ extension DropdownMenu: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return displaySectionHeader ? sectionHeaderHeight : CGFloat.leastNormalMagnitude
+        guard displaySectionHeader else {
+            return .leastNormalMagnitude
+        }
+        return delegate?.dropdownMenu(self, heightForHeaderInSection: section) ?? 44
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -390,13 +443,21 @@ extension DropdownMenu: UITableViewDelegate {
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)
-        hideMenu(isSelectAction: true)
+        let shouldDismiss = delegate?.dropdownMenu(self, shouldDismissWhenSelectRowAt: indexPath) ?? true
+        if shouldDismiss {
+            hideMenu(isSelectAction: true)
+        }
         delegate?.dropdownMenu(self, didSelectRowAt: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionHeader = SectionHeader(style: sectionHeaderStyle)
-        sectionHeader.titleLabel.text = sections[section].sectionIdentifier
-        return sectionHeader
+        let dropdownSection = sections[section]
+        if let customSectionHeader = dropdownSection.customSectionHeader {
+            return customSectionHeader
+        } else {
+            let sectionHeader = SectionHeader(style: sectionHeaderStyle)
+            sectionHeader.titleLabel.text = dropdownSection.sectionIdentifier
+            return sectionHeader
+        }
     }
 }
