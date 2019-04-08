@@ -33,14 +33,24 @@ public extension DropUpMenuDelegate {
 private let screenRect = UIScreen.main.bounds
 
 open class DropUpMenu: UIView {
-    fileprivate var items: [DropdownItem] = []
-    fileprivate var selectedRow: Int
-    open var tableView: UITableView!
-    fileprivate var barCoverView: UIView!
-    fileprivate var isShow = false
-    fileprivate var addedWindow: UIWindow?
-    fileprivate var windowRootView: UIView?
-    fileprivate lazy var tapGestureRecognizer: UITapGestureRecognizer = {
+    private var items: [DropdownItem] = []
+    private var selectedRow: Int
+    open lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        tableView.estimatedSectionHeaderHeight = 0
+        tableView.estimatedSectionFooterHeight = 0
+        return tableView
+    }()
+    private lazy var barCoverView: UIView = {
+        let barCoverView = UIView()
+        barCoverView.backgroundColor = UIColor.clear
+        barCoverView.translatesAutoresizingMaskIntoConstraints = false
+        return barCoverView
+    }()
+    private var isShow = false
+    private var addedWindow: UIWindow?
+    private var windowRootView: UIView?
+    private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(self.hideMenu))
     }()
     
@@ -86,10 +96,10 @@ open class DropUpMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
-        initTableView()
+        setupTableView()
     }
     
-    fileprivate func setupGestureView() {
+    private func setupGestureView() {
         let gestureView = UIView()
         gestureView.backgroundColor = UIColor.clear
         addSubview(gestureView)
@@ -102,16 +112,13 @@ open class DropUpMenu: UIView {
         gestureView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    fileprivate func initTableView() {
-        tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView?.delegate = self
-        tableView?.dataSource = self
-        tableView.estimatedSectionHeaderHeight = 0
-        tableView.estimatedSectionFooterHeight = 0
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
         addSubview(tableView)
     }
     
-    fileprivate func layoutTableView() {
+    private func layoutTableView() {
         tableViewHeight = CGFloat(items.count) * rowHeight
         let maxHeight = UIScreen.main.bounds.height - bottomOffsetY
         if tableViewHeight > maxHeight {
@@ -125,7 +132,7 @@ open class DropUpMenu: UIView {
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: tableView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0)])
     }
     
-    fileprivate func setupBottomSeperatorView() {
+    private func setupBottomSeperatorView() {
         let seperatorView = UIView()
         seperatorView.backgroundColor = tableViewSeperatorColor
         addSubview(seperatorView)
@@ -136,10 +143,7 @@ open class DropUpMenu: UIView {
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.5)])
     }
     
-    fileprivate func setupBottomCoverView(on view: UIView) {
-        barCoverView = UIView()
-        barCoverView.backgroundColor = UIColor.clear
-        barCoverView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupBottomCoverView(on view: UIView) {
         view.addSubview(barCoverView)
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0)])
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: barCoverView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: bottomOffsetY)])

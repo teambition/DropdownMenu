@@ -7,7 +7,12 @@
 //
 
 open class SectionHeader: UIView {
-    var titleLabel: UILabel!
+    var titleLabel: UILabel =  {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        return titleLabel
+    }()
+    
     var style: SectionHeaderStyle = SectionHeaderStyle()
 
     convenience init(style: SectionHeaderStyle) {
@@ -25,8 +30,6 @@ open class SectionHeader: UIView {
     }
 
     func commonInit() {
-        titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = style.font
         titleLabel.textColor = style.textColor
         backgroundColor = style.backgroundColor
