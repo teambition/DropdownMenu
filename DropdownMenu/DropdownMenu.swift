@@ -33,23 +33,28 @@ public extension DropdownMenuDelegate {
 }
 
 open class DropdownMenu: UIView {
-    fileprivate weak var navigationController: UINavigationController!
+    private weak var navigationController: UINavigationController!
    
-    fileprivate var sections: [DropdownSection] = []
-    fileprivate var selectedIndexPath: IndexPath
+    private var sections: [DropdownSection] = []
+    private var selectedIndexPath: IndexPath
     
-    open var tableView: UITableView!
-    fileprivate var barCoverView: UIView?
+    open var tableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero, style: .grouped)
+        tableView.estimatedSectionFooterHeight = 0
+        tableView.estimatedSectionHeaderHeight = 0
+        return tableView
+    }()
+    private var barCoverView: UIView?
     open var isShow = false
-    fileprivate var addedWindow: UIWindow?
-    fileprivate var windowRootView: UIView?
-    fileprivate var topConstraint: NSLayoutConstraint?
-    fileprivate var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
-    fileprivate var tableViewHeightConstraint: NSLayoutConstraint?
-    fileprivate let iPhoneXPortraitTopOffset: CGFloat = 88.0
-    fileprivate let portraitTopOffset: CGFloat = 64.0
-    fileprivate let landscapeTopOffset: CGFloat = 32.0
-    fileprivate var topLayoutConstraintConstant: CGFloat {
+    private var addedWindow: UIWindow?
+    private var windowRootView: UIView?
+    private var topConstraint: NSLayoutConstraint?
+    private var navigationBarCoverViewHeightConstraint: NSLayoutConstraint?
+    private var tableViewHeightConstraint: NSLayoutConstraint?
+    private let iPhoneXPortraitTopOffset: CGFloat = 88.0
+    private let portraitTopOffset: CGFloat = 64.0
+    private let landscapeTopOffset: CGFloat = 32.0
+    private var topLayoutConstraintConstant: CGFloat {
         var offset: CGFloat = 0
         if !navigationController.isNavigationBarHidden {
           offset = navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y
@@ -108,7 +113,7 @@ open class DropdownMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
-        initTableView()
+        setupTableView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: UIApplication.willChangeStatusBarOrientationNotification, object: nil)
     }
@@ -123,7 +128,7 @@ open class DropdownMenu: UIView {
         
         clipsToBounds = true
         setupGestureView()
-        initTableView()
+        setupTableView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateForOrientationChange(_:)), name: UIApplication.willChangeStatusBarOrientationNotification, object: nil)
     }
@@ -186,7 +191,7 @@ open class DropdownMenu: UIView {
         }
     }
     
-    fileprivate func setupGestureView() {
+    private func setupGestureView() {
         let gestureView = UIView()
         gestureView.backgroundColor = UIColor.clear
         addSubview(gestureView)
@@ -199,17 +204,14 @@ open class DropdownMenu: UIView {
         gestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
     
-    fileprivate func initTableView() {
-        tableView = UITableView(frame: CGRect.zero, style: .grouped)
+    private func setupTableView() {
         tableView.separatorStyle = separatorStyle
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedSectionFooterHeight = 0
-        tableView.estimatedSectionHeaderHeight = 0
         addSubview(tableView)
     }
     
-    fileprivate func layoutTableView() {
+    private func layoutTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         updateTableViewHeight()
@@ -222,7 +224,7 @@ open class DropdownMenu: UIView {
         self.tableViewHeightConstraint = tableViewHeightConstraint
     }
 
-    fileprivate func updateTableViewHeight() {
+    private func updateTableViewHeight() {
         tableViewHeight = tableviewHeight()
         
         let maxHeight = navigationController.view.frame.height - topLayoutConstraintConstant - defaultBottonMargin
@@ -236,7 +238,7 @@ open class DropdownMenu: UIView {
         }
     }
 
-    fileprivate func updateForSectionsChange(_ animations: (() -> Void)? = nil) {
+    private func updateForSectionsChange(_ animations: (() -> Void)? = nil) {
         updateTableViewHeight()
         tableViewHeightConstraint?.constant = tableViewHeight
         UIView.animate(withDuration: 0.3) { [weak self] in
@@ -248,7 +250,7 @@ open class DropdownMenu: UIView {
         }
     }
     
-    fileprivate func setupTopSeperatorView() {
+    private func setupTopSeperatorView() {
         let seperatorView = UIView()
         seperatorView.backgroundColor = tableViewSeperatorColor
         addSubview(seperatorView)
@@ -259,7 +261,7 @@ open class DropdownMenu: UIView {
         NSLayoutConstraint.activate([NSLayoutConstraint.init(item: seperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0.5)])
     }
     
-    fileprivate func setupNavigationBarCoverView(on view: UIView) {
+    private func setupNavigationBarCoverView(on view: UIView) {
         barCoverView = UIView()
         barCoverView?.backgroundColor = UIColor.clear
         view.addSubview(barCoverView!)
@@ -273,7 +275,7 @@ open class DropdownMenu: UIView {
         barCoverView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideMenu)))
     }
     
-    fileprivate func tableviewHeight() -> CGFloat {
+    private func tableviewHeight() -> CGFloat {
         var height: CGFloat = 0
         sections.enumerated().forEach {
             if displaySectionHeader {
