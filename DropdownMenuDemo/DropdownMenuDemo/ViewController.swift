@@ -75,6 +75,11 @@ class ViewController: UIViewController {
     @IBAction func sectionSwitchValueChanged(_ sender: AnyObject) {
         showSection = sectionSwitch.isOn
     }
+    
+    @IBAction func presentAction(_ sender: Any) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController")
+        present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+    }
 }
 
 extension ViewController: DropdownMenuDelegate {
