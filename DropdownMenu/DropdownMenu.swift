@@ -54,10 +54,16 @@ open class DropdownMenu: UIView {
     private let iPhoneXPortraitTopOffset: CGFloat = 88.0
     private let portraitTopOffset: CGFloat = 64.0
     private let landscapeTopOffset: CGFloat = 32.0
+    
     private var topLayoutConstraintConstant: CGFloat {
         var offset: CGFloat = 0
         if !navigationController.isNavigationBarHidden {
-          offset = navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y
+            if let navigationBarWindow = navigationController.view.window {
+                let convertRect = navigationController.view.convert(navigationController.navigationBar.frame, to: navigationBarWindow)
+                offset = convertRect.height + convertRect.origin.y
+            } else {
+                offset = navigationController.navigationBar.frame.height + navigationController.navigationBar.frame.origin.y
+            }
         }
         return offset + topOffsetY
     }
@@ -165,7 +171,6 @@ open class DropdownMenu: UIView {
     }
     
     @objc func updateForOrientationChange(_ nofication: Notification) {
-        print("UIApplicationWillChangeStatusBarOrientation")
         if let oriention = (nofication as NSNotification).userInfo?[UIApplication.statusBarOrientationUserInfoKey] as? Int {
             var topOffset: CGFloat
             switch oriention {
