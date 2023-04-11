@@ -16,7 +16,7 @@
 - **Only text cell**
 - **Image and text cell**
 - **Highlight cell**
-- **Seleted cell**
+- **Selected cell**
 - **Detail accessory cell**
 
 ## Requirements
